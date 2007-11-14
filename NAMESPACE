@@ -1,2 +1,0 @@
-useDynLib(spatgraphs)
-export(rgeo_graph, rmark_graph, rcross_graph, rnn_graph, rknn_graph, rrst_graph, rmst_graph, rmknn_graph, rgabriel_graph, plot_graph, rsig_graph, rclustermatrix, rlist_clusters, plot_clusters, rclustercounts)

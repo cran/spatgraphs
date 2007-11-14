@@ -1,0 +1,22 @@
+count_clusters<-function(pp,Rvec,dbg=T,tor=T)
+{
+  n<-0*Rvec
+  for(i in 1:length(Rvec))
+  {
+    e<-spatgraph(pp,"geometric",pars=list(R=Rvec[i]),toroidal.correction=tor,print_dbg=dbg)
+    ec<-sgcluster(e,print_dbg=dbg)
+    cl<-sgclusterlist(ec)
+    n[i]<-length(cl)
+  }
+  n
+}
+
+
+confun3d<-function(pp, rvec, Rvec, h, toroidal.correction=1)
+{
+	v<-matrix( ncol=length(rvec), nrow=length(Rvec) )
+	for (i in 1:length(Rvec)) {
+		v[i,] <- confun(pp,R=Rvec[i],h=h,rvec=rvec,ker=0,tor=toroidal.correction)
+	}
+	v
+}
