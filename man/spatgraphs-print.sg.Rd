@@ -1,8 +1,10 @@
 \name{spatgraphs-print.sg}
 \alias{print.sg}
+\alias{print.sgadj}
+\alias{print.sgc}
 \title{print.sg}
 \description{
-  Print method for class sg.
+  Print method.
 }
 \details{
   \tabular{ll}{

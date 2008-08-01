@@ -1,46 +1,79 @@
 # class.R
 # 
-# Defines the graph-class and clustermatrix-class
+# Defines the graph-class and cluster-class
+#
+#
+# TODO: - consider including double edges
+#		- how about weighted edges?
 #
 # Author: Tuomas Rajala  <tarajala@maths.jyu.fi>
+# 150408
 ###############################################################################
 
-sg<-function(edges=diag(0),type="?",pars=NULL,sym=TRUE)
+# the main spatgraphs graph-class
+#
+sg<-function(edges=list(),type="?",pars=NULL,sym=TRUE, note=NULL)
 {
-	e<-list(matrix=edges)
-	e$N<-dim(edges)[1]
-	e$symmetric<-sym
+	for(i in 1:length(edges)) edges[[i]]<-union(NULL, edges[[i]]) # remove possible dublicates amongst links -> simple graph 
+	e<-list(edges=edges)
+	e$N<-length(edges)
+	e$symmetric<-"?"
 	e$type<-type
 	e$parameters<-pars
+	if(!is.null(note))e$note<-note
 	class(e)<-"sg"
 	e
 }
+###############################################################################
+
+# print method for sg
 
 print.sg<-function(x,...)
 {
-   type<-x$type
+   par_should_be<-unlist(SG_GRAPH_PARS[which(x$type==SG_SUPPORTED_GRAPHS)])
    nam<-names(x$parameters)
-   p<-NULL
-   if(!is.null(nam)){
-   	for(i in 1:length(nam))
-   	p<-paste(p,nam[i],"=",x$parameters[[i]],sep="",collapse=",")
-    p<-paste("(",p,")") 
-   }
-   if(class(x)=="sg")kumpi<-"adjacency"
-   else kumpi<-paste("cluster count",x$nclusters,"clustering")
-   cat(paste("'Spatgraphs' ",kumpi," matrix:",
-             "\ngraph type '",type,"' ",p,", for ",x$N," points\n",sep=""))
+   if(par_should_be=="") p<-""
+   else p<-paste(", par=(",paste(x$parameters,collapse=","),")",sep="")
+   cat(paste("'Spatgraphs' edge connection list-of-lists:",
+             "\ngraph type '",x$type,"'",p,", for ",x$N," points.\n",sep=""))
+   if(!is.null(x$note))cat(paste("Note: ", x$note,".\n",sep=""))
              
 }
+###############################################################################
 
-sgc<-function(edges, type="?",pars=NULL,n)
+# spatgraphs cluster class
+sgc<-function(edges, type="?",pars=NULL,note=NULL)
 {
    e<-sg(edges,type,pars,sym=TRUE)
-   e$nclusters<-n
+   e$parameters<-pars
+   e$nclusters<-length(edges)
+   names(e)[1]<-"clusters"
    class(e)<-"sgc"
+   if(!is.null(note))e$note<-note
    e
 }
+###############################################################################
+# sgc print method
 print.sgc<-function(x,...)
 {
-	print.sg(x)
+	par_should_be<-unlist(SG_GRAPH_PARS[which(x$type==SG_SUPPORTED_GRAPHS)])
+	nam<-names(x$parameters)
+	if(par_should_be=="") p<-""
+	else p<-paste(", par=(",paste(x$parameters,collapse=","),")",sep="")
+	
+	cat(paste("'Spatgraphs' cluster/component list-of-lists:",
+	"\ngraph type '",x$type,"'",p,", ",x$N," component",ifelse(x$N>1,"s",""),".\n",sep=""))
+	if(!is.null(x$note))cat(paste("Note: ", x$note,".\n",sep=""))
+}
+
+###################################################################
+# symmetrisize
+sg_to_sym<-function(e)
+{
+	for(i in 1:length(e$edges) )
+		if(length(e$edges[[i]])>0)
+			for(j in e$edges[[i]])
+				e$edges[[j]]<-union(i,e$edges[[j]])
+	e$symmetric<-TRUE
+	e
 }

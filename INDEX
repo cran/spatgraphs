@@ -2,7 +2,6 @@ ccc_graph               ccc\_graph
 clusfun                 clusfun
 confun                  confun
 cumconfun               cumconfun
-gabriel_graph           gabriel\_graph
 mst_cut                 mst\_cut
 mst_prune               mst\_prune
 plot_clusters           plot\_clusters

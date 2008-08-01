@@ -1,22 +1,39 @@
-count_clusters<-function(pp,Rvec,dbg=T,tor=T)
-{
-  n<-0*Rvec
-  for(i in 1:length(Rvec))
-  {
-    e<-spatgraph(pp,"geometric",pars=list(R=Rvec[i]),toroidal.correction=tor,print_dbg=dbg)
-    ec<-sgcluster(e,print_dbg=dbg)
-    cl<-sgclusterlist(ec)
-    n[i]<-length(cl)
-  }
-  n
-}
+#TODO: 290708  
+Nimeke									koodi	testattu    manuaali
+Graafit:																	
+	spatgraph
+		geometrinen						x			x		
+		mass_geometrinen				x			x
+		knn								x			x
+		kmnn
+		markcross						x			x
+		SIG								x			x
+		RST								x			x
+		MST								x			x
+		gabriel						    x			x
+		RNG 2D							x			x
+		Delauney 2D                     x			x
+		CCC								x			x
+		STIR							
+		convex nearest neighbours
+	
+Klusterointi:
+	spatcluster							x			x
+	
+Plottaus:
+	plot.sg								x			x
+	plot.sgc							x			x
+Export:
+	dxf									x	
 
-
-confun3d<-function(pp, rvec, Rvec, h, toroidal.correction=1)
-{
-	v<-matrix( ncol=length(rvec), nrow=length(Rvec) )
-	for (i in 1:length(Rvec)) {
-		v[i,] <- confun(pp,R=Rvec[i],h=h,rvec=rvec,ker=0,tor=toroidal.correction)
-	}
-	v
-}
+Muut:
+	luokka sg							x
+	luokka sgc							x
+	convexhull
+	list_to_matrix ?					x
+	matrix_to_list ?					x			
+	cut.sg								x			x
+	prune.sg							v1			x 				ei yksikäs			
+	runif3d								x			x
+	spin3d								x			
+	dists								v1

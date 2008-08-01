@@ -2,11 +2,11 @@
 \alias{sgc}
 \title{sgc}
 \description{
-  Clustermatrix class for spatgraphs
+Clusterlist-of-lists class for spatgraphs. Methods: print, plot.
 }
 \details{
   \tabular{ll}{
-    Date: \tab 2007-10-24\cr
+    Date: \tab 2008-07-30\cr
     License: \tab GPL v2 or later\cr
   }
 }
