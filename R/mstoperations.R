@@ -1,11 +1,11 @@
 # MST operations: prune and cut. Works also for the other graphs.
 # 
 # Tuomas Rajala <tarajala@maths.jyu.fi>
-# 290708
+# 070808
 #############
 
-cut.sg<-function(x, ...)cut_sg(pp=x,...)
-cut_sg<-function(pp, R=NULL,doDists=FALSE, toroidal=FALSE, dbg=FALSE)
+cut.sg<-function(x, ...)cut_sg(x,...)
+cut_sg<-function(x, pp, R=NULL,doDists=FALSE, toroidal=FALSE, dbg=FALSE)
 {
 	if(is.null(R)) return(x)
 	if(R<=0)return(x)
@@ -17,8 +17,9 @@ cut_sg<-function(pp, R=NULL,doDists=FALSE, toroidal=FALSE, dbg=FALSE)
 	sg(edges,type=x$type,pars=x$parameters,note=paste("cut with R=",R,sep=""))
 }
 
-if(!exists("prune"))
+if(!exists("prune")) 
 	prune<-function(x,...) UseMethod("prune")
+
 prune.sg<-function(x,...) prune_sg(x,...)
 prune_sg<-function(x, pp, level=1, doDists=FALSE, toroidal=FALSE, dbg=FALSE)
 {

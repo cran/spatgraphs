@@ -50,6 +50,7 @@ public:
 	void sg_RST();
 	void sg_RNG();
 	void sg_CCC();
+	void sg_STIR();
 
 	void sg_cut(double *R);
 	void sg_prune(double *lev);
@@ -58,5 +59,7 @@ public:
 	void remove_duplicates();
 	SEXP toSEXP();
 };
+
+double Attenuate(double r, double alpha); // used by STIR graph
 
 #endif /*GRAPH_H_*/

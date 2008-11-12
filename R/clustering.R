@@ -12,5 +12,7 @@ spatcluster<-function(e,dbg=FALSE, sym=TRUE){
     sgc(clusters,e$type,e$parameters)
 }
 
+
+
 ##EO clustering
 

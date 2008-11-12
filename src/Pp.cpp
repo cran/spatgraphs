@@ -23,7 +23,7 @@ void Pp::Init(SEXP Argspp)
 	for(i=0;i<m;i++)
 	{
 		old = 0;
-		for(j=0;j<temp.size();j++)
+		for(j=0;j<(int)temp.size();j++)
 			if(temp.at(j)==type[i]){ old = 1;break;}
 		if(!old)
 			temp.push_back(type[i]);
@@ -58,7 +58,7 @@ void Pp::Init(double *x0, double *y0, double *z0, int *type0, double *mass0, int
 	for(i=0;i<m;i++)
 	{
 		old = 0;
-		for(j=0;j<temp.size();j++)
+		for(j=0;j<(int)temp.size();j++)
 			if(temp.at(j)==type[i]){ old = 1;break;}
 		if(!old)
 			temp.push_back(type[i]);

@@ -50,7 +50,7 @@ SEXP vectorToSEXP(std::vector<std::vector<int> > nodelist)
 	SEXP graph, *node;
 	PROTECT(graph = allocVector(VECSXP, nodelist.size()));
 	int i,j, *p, n;
-	for(i=0;i< nodelist.size();i++)
+	for(i=0;i< (int)nodelist.size();i++)
 	{
 		node = new SEXP;
 		PROTECT(*node = allocVector(INTSXP, nodelist[i].size() ) );

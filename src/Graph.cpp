@@ -98,7 +98,7 @@ void Graph::remove_duplicates()
 		for(j=0; j < (int) this->nodelist.at(i).size() ; j++)
 		{
 			isnew=1;
-			for(k=0;k<node->size();k++)
+			for(k=0;k<(int)node->size();k++)
 			{
 				if(node->at(k) == this->nodelist.at(i).at(j))
 				{
@@ -165,6 +165,7 @@ void Graph::sg_calc()
 	else if(*gtype==8) this->sg_RST();
 	else if(*gtype==9) this->sg_RNG();
 	else if(*gtype==10) this->sg_CCC();
+	else if(*gtype==11) this->sg_STIR();
 }
 
 /********************************************************************************************/
@@ -207,7 +208,7 @@ void Graph::sg_shrink_geometric(double *R)
 				node->push_back(j0+1);
 		}
 		nodelist[i].clear();nodelist[i].resize(0);
-		for (j = 0; j < node->size(); ++j) this->nodelist[i].push_back(node->at(j));
+		for (j = 0; j < (int)node->size(); ++j) this->nodelist[i].push_back(node->at(j));
 		delete node;
 	}
 	if(*dbg)printf(" Ok.");
@@ -345,7 +346,7 @@ void Graph::sg_gabriel()
 				y0 = fabs(this->pp->y[i]-this->pp->y[j])/2.0+fmin(this->pp->y[i],this->pp->y[j]);
 				R2 = (pow(this->pp->x[i]-this->pp->x[j],2) + pow(this->pp->y[i]-this->pp->y[j],2) )/4.0;
 				empty = 1;
-				for(m=0; m < this->nodelist[i].size();m++) // the small ball is included in the preprocessing ball
+				for(m=0; m <(int) this->nodelist[i].size();m++) // the small ball is included in the preprocessing ball
 				{
 					k =  (int) this->nodelist[i][m]-1;
 					if(k != i)
@@ -365,7 +366,7 @@ void Graph::sg_gabriel()
 				}
 			}
 			nodelist[i].clear();nodelist[i].resize(0);
-			for(h=0;h<node->size();h++) nodelist[i].push_back(node->at(h));
+			for(h=0;h<(int)node->size();h++) nodelist[i].push_back(node->at(h));
 			delete node;
 		}
 	}
@@ -400,10 +401,10 @@ void Graph::sg_delauney()
 		for(i = 0 ; i< *pp->n ;  i++)
 		{
 			node = new std::vector<int>;
-			for( l=0 ; l < nodelist[i].size()-1; l++ )
+			for( l=0 ; l < (int)nodelist[i].size()-1; l++ )
 			{
 				j = nodelist[i][l]-1;
-				for(h=l+1; h < nodelist[i].size();h++ )
+				for(h=l+1; h < (int)nodelist[i].size();h++ )
 				{
 					k = nodelist[i][h]-1;
 					if( Empty(pp->x,pp->y,pp->n,i,j,k,dummy, dummy, dummy) )
@@ -414,7 +415,7 @@ void Graph::sg_delauney()
 				}
 			}
 			nodelist[i].clear();nodelist[i].resize(0);
-			for(h=0;h<node->size();h++) nodelist[i].push_back((*node).at(h));
+			for(h=0;h<(int)node->size();h++) nodelist[i].push_back((*node).at(h));
 			delete node;
 		}
 		this->remove_duplicates();
@@ -587,6 +588,43 @@ void Graph::sg_CCC()
 	if(*dbg) printf(" Ok.");
 }
 /********************************************************************************************/
+double Attenuate(double r, double alpha)
+{
+	return pow(1.0+r,-alpha);
+}
+
+void Graph::sg_STIR()
+{
+	if(*dbg) printf("Signal-To-Noise-Ratio graph, noise=%f,alpha=%f,beta=%f,gamma=%f: ",par[0],par[1],par[2],par[3]);
+	int i,j;
+	double noise0 = par[0], alpha=par[1],beta=par[2],gamma=par[3], noise[*pp->n], sij,sji,s;
+	//first we compute the interference for each location including the sending transmitter
+	for(i=0;i<*pp->n;i++)
+	{
+		noise[i]=0.0;
+		for(j=0;j<*pp->n;j++)
+			if(i!=j) noise[i] = noise[i]+ pp->mass[j]*Attenuate((this->*Dist)(&i,&j),alpha);
+	}
+
+	for(i=0;i<(*pp->n-1);i++)
+		for(j=i+1;j<*pp->n;j++)
+		{
+			sij = pp->mass[i]*Attenuate((this->*Dist)(&i,&j),alpha);
+			sji = pp->mass[j]*Attenuate((this->*Dist)(&i,&j),alpha);
+			sij = sij/(noise0 + gamma* (noise[j]-sij));
+			sij = sji/(noise0 + gamma* (noise[i]-sji));
+			s = fminf(sij,sji);
+			if(s >= beta )
+			{
+				addNew(i,j+1);
+				addNew(j,i+1);
+			}
+		}
+	if(*dbg) printf(" Ok.");
+}
+
+
+/********************************************************************************************/
 // cut (remove) the graph edges longer than R
 void Graph::sg_cut(double *R)
 {
@@ -615,7 +653,7 @@ void Graph::sg_cut(double *R)
 
 void Graph::sg_prune(double *lev)
 {
-	int level = (int) *lev , i, leaf, count=0, notnew, prev, next;
+	int level = (int) *lev , i, leaf, count=0, prev, next;
 	std::vector<int> left;
 	std::vector<int> branch, *pnode;
 	left.resize(0);
@@ -657,10 +695,10 @@ void Graph::sg_prune(double *lev)
 		{
 			pnode = new std::vector<int>;
 			pnode->resize(0);
-			for(i=0; i < branch.size();i++)
+			for(i=0; i < (int)branch.size();i++)
 				nodelist.at(branch.at(i)-1).clear();
 
-			for(i=0; i < nodelist.at(next-1).size();i++)
+			for(i=0; i < (int)nodelist.at(next-1).size();i++)
 				if(nodelist.at(next-1).at(i) != prev)
 					pnode->push_back(nodelist.at(next-1).at(i));
 			nodelist.at(next-1).swap(*pnode);
@@ -674,4 +712,7 @@ void Graph::sg_prune(double *lev)
 	if(*dbg)printf(" Ok (%i branches pruned).",count);
 }
 /********************************************************************************************/
+
+
+
 // EOF

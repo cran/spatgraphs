@@ -1,0 +1,21 @@
+v2.1:
+ - renumber, stable release.
+ - fix print.sgc for RST parameter
+ - added the Signal-to-noise-Ratio graph
+ - cleaned up documentation
+v2.07:
+ - fix the lineplotting errors given by the NA's in draw vector
+v2.06:
+ - added shortestPath
+v2.05:
+ - fix sgc-class $N computation for clusters
+v2.04:
+ - fix the sgc-class $N to be from cluster count to point count
+v2.03:
+ - added 'which' to plot
+ - fiddled with the print.sg, removed checks and print whatever is in x$parameters
+ - fix cut.sg
+v2.02:
+ - fixed the print.sg: warning for RST (compared c(0,0,0) and "")
+ 
+ 

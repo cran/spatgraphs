@@ -44,12 +44,20 @@ The following 'type' values are accepted, note that some of them need also the '
  'RST'\tab par=c(x0,y0,z0). Radial spanning tree, par=origin of radiation.\cr
  'RNG'\tab Relative neighbourhood graph.\cr
  'CCC'\tab par=integer (or string). Class-Cover-Catch, par=target type.\cr
- 'STIR'\tab Signal-to-noise-ratio. NOT YET IMPLEMENTED.\cr
+ 'STIR'\tab par=c(noise,alpha,beta,gamma). Signal-To-Noise-Ratio, par: background noise, signal attenuation (1/r\^alpha), 
+       signal threshold beta, interference tolerance gamma. See ref 1.\cr
 }
 where
 \preformatted{
  m(x) ~ real valued mark for x (size, mass, diameter, transmission power...)
 }
+The graphs 'mass\_geometric', 'markcross' and 'STIR' use scalar marks, 'CCC' class marks (e.g. integer). If given 'pp' has no marks it will be marked with 1.0's.
 
+}
+\references{
+Dousse, O., Baccelli, F. \& Thiran, P.:  Impact of Interferences on Connectivity in Ad Hoc
+Networks. IEEE/ACM Transactions on Networking,13 (2),p. 425-436,2005.
+
+Marchette, D.: Random Graphs for Statistical Pattern Recognition, Wiley 2004.
 }
 \keyword{spatial}

@@ -10,10 +10,12 @@
 
 SG_SUPPORTED_GRAPHS<-c("geometric","knn","mass_geometric",
 					   "gabriel","delauney","MST","markcross",
-					   "SIG","RST","RNG","CCC")
+					   "SIG","RST","RNG","CCC","STIR")
 SG_GRAPH_PARS<-list(R="numeric>0",k="integer>0","",
 					  "","","","",
-					  "",list(x0="numeric",y0="numeric",z0="numeric=0"),"",type0="factor")
+					  "",list(x0="numeric",y0="numeric",z0="numeric=0"),"",type0="factor",
+					   list(noise="numeric>0",alpha="numeric",beta="numeric>0",gamma="numeric>=0") #STIR
+			       )
 ########
 
 spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=FALSE, toroidal=FALSE)

@@ -30,7 +30,7 @@ SEXP sg_cluster(SEXP Args)
 	for(i=0;i<n;i++)
 	{
 		clustlist.at(i).clear();
-		for(j=0;j<nodelist.at(i).size();j++)//group numbers=indices of neighbours of i //to col(i)
+		for(j=0;j<(int)nodelist.at(i).size();j++)//group numbers=indices of neighbours of i //to col(i)
 		{
 			clustlist.at(i).push_back(nodelist.at(i).at(j)-1);//A[koot[i]*n+i] = j;
 		}
@@ -61,7 +61,7 @@ SEXP sg_cluster(SEXP Args)
 					h=clustlist.at(g).at(j);//A[j*n+g]; //from rear, for .pop_back()
 					if(h != i )
 					{
-						for(l=0;l<clustlist.at(i).size();l++)//is it new?
+						for(l=0;l<(int)clustlist.at(i).size();l++)//is it new?
 						{
 							//                             printf(".");
 							if(clustlist.at(i).at(l) == h){ s=0; }
@@ -102,13 +102,13 @@ SEXP sg_cluster(SEXP Args)
 	//    }
 	std::vector<std::vector<int> > reslist;
 	std::vector<int>  *p;
-	for(i=0;i<clustlist.size();i++)//fix the damn index shift
+	for(i=0;i<(int)clustlist.size();i++)//fix the damn index shift
 	{
 		p = new std::vector<int> ;
 		p->resize(0);
 		if(clustlist.at(i).size()>0)
 		{
-			for(j=0;j<clustlist.at(i).size();j++)
+			for(j=0;j<(int)clustlist.at(i).size();j++)
 			{
 				p->push_back(clustlist.at(i).at(j)+1);
 				clustlist.at(clustlist.at(i).at(j)).clear();

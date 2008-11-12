@@ -10,7 +10,7 @@
 
 tosgadj<-function(x)
 {
-	if(!verifyclass(x,"sg"))stop("Give class 'sg' object.")
+	verifyclass(x,"sg")
 	A<-diag(0,x$N)
 	for(i in 1:x$N)
 	{
@@ -21,7 +21,7 @@ tosgadj<-function(x)
 
 tosg<-function(x)
 {
-	if(!verifyclass(x,"sgadj"))stop("Give class 'sgadj' object.")
+	verifyclass(x,"sgadj")
 	A<-list()
 	for(i in 1:x$N)
 	{

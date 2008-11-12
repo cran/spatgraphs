@@ -3,6 +3,7 @@
 \alias{sgadj}
 \alias{tosg}
 \alias{tosgadj}
+\alias{verifyclass}
 \alias{sg_to_sym}
 
 \title{sg}

@@ -6,8 +6,8 @@ shake<-function(pp, a=0.001)
 }
 
 #send out a mail, I use this to notify myself when long remote runs end.
-mailer<-function(header, body, address="")  
-	system(paste("echo '",body,"'|mail -s '",header,"' ",address,sep=""))
+mailer<-function(header, body, address="",prefix="[computation] ")  
+	system(paste("echo '",body,"'|mail -s '",prefix,header,"' ",address,sep=""))
 
 #print the used time, exec 't1<-Sys.time()' before run
 took<-function(t1)

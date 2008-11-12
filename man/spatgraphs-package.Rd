@@ -36,7 +36,7 @@ all handled by the spatgraph()-function:
  Gabriel graph          see refs.            
  Class cover catch      see refs.            
  Delauney triangulation see refs.
-
+ Signal-to-noise-ratio  see refs.
 
 where 
     ||.|| ~ euclidian distance
@@ -62,6 +62,7 @@ tosg				  Convert to edge list from sgadj
 cut					  Cut edges longer than given R>0
 prune				  Prunes the graph, aimed for MST
 sg2dxf				  Write graph to a dxf file
+shortestPath		  Find the shortest edgepath between two points
 }
 
 }
@@ -74,17 +75,17 @@ tarajala@maths.jyu.fi
 }
 }
 \references{
-Marchette, D.: Random Graphs for Statistical Pattern Recognition, Wiley 2004.
-
 Dousse, O., Baccelli, F. \& Thiran, P.:  Impact of Interferences on Connectivity in Ad Hoc
 Networks. IEEE/ACM Transactions on Networking,13 (2),p. 425-436,2005.
+
+Marchette, D.: Random Graphs for Statistical Pattern Recognition, Wiley 2004.
 }
 
 \keyword{ package }
 \seealso{ 
 Spatial point processes in general, see the package 'spatstat'
 
-For more versatile Voronoi/Delauney duality, see the package 'tripack'
+For more versatile Voronoi/Delauney handling, see the package 'tripack'
 
 The package 'rgl' is required for 3D-plotting.
 }

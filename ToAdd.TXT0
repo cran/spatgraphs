@@ -1,11 +1,15 @@
-#TODO: 290708  
-Nimeke									koodi	testattu    manuaali
+#TODO: 151008
+ - lis‰‰ toroidal correction gabrielille ja delauneylle
+
+
+Ominaisuudet:
+  
+Nimeke									koodi	testattu    
 Graafit:																	
 	spatgraph
 		geometrinen						x			x		
 		mass_geometrinen				x			x
 		knn								x			x
-		kmnn
 		markcross						x			x
 		SIG								x			x
 		RST								x			x
@@ -14,26 +18,29 @@ Graafit:
 		RNG 2D							x			x
 		Delauney 2D                     x			x
 		CCC								x			x
-		STIR							
+		STIR							x			?
 		convex nearest neighbours
 	
-Klusterointi:
+Clustering:
 	spatcluster							x			x
 	
 Plottaus:
 	plot.sg								x			x
 	plot.sgc							x			x
 Export:
-	dxf									x	
-
+	dxf									x			x
+	
+Rajapinta:
+	igraph
+	graph
 Muut:
-	luokka sg							x
-	luokka sgc							x
+	luokka sg							x			x
+	luokka sgc							x			x
 	convexhull
-	list_to_matrix ?					x
-	matrix_to_list ?					x			
+	tosgadj		 						x			x				list to adj. matrix
+	tosg		 						x			x				adj.matrix to list
 	cut.sg								x			x
 	prune.sg							v1			x 				ei yksik√§s			
 	runif3d								x			x
 	spin3d								x			
-	dists								v1
+	shortestPath						x			
