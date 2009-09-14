@@ -1,6 +1,6 @@
-#TODO: 151008
- - lis‰‰ toroidal correction gabrielille ja delauneylle
+#TODO: 250309
 
+ - salli preGraph- parametreissa, nopeuttaa jos joku haluaa k‰ytt‰‰ param.range-laskentaa (reverse search)
 
 Ominaisuudet:
   

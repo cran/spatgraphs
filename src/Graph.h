@@ -31,7 +31,7 @@ public:
 	Graph();
 	virtual ~Graph();
 
-	void Init(Pp *pp0, int *gtype0, double *par, double *prepR, int *doDists, int *toroidal, int *dbg );
+	void Init(Pp *pp0, int *gtype0, double *par, double *prepR, int *doDists, double *preDists, int *toroidal, int *dbg );
 	void setNodelist(std::vector<std::vector<int> > *nodelist_new);
 	void addNew(int , int);
 	void sg_calc();

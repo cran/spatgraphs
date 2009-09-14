@@ -19,7 +19,9 @@ SEXP sg_cutprune_c(SEXP Args)
 	int *doDists, *dbg, *toroidal, *cut, i0=0;
 	Graph graph;
 	SEXP prepGraph;
-	double *par, d0=0.0;
+	double *par, d0=0.0, *preDists, d1=-1.0;
+
+	preDists = &d1;
 
 	Args = CDR(Args);
 	pp.Init(CAR(Args)); // init pp
@@ -43,7 +45,8 @@ SEXP sg_cutprune_c(SEXP Args)
 	cut = INTEGER(CAR(Args));
 
 
-	graph.Init(&pp, &i0, par, &d0, doDists, toroidal, dbg);
+
+	graph.Init(&pp, &i0, par, &d0, doDists, preDists, toroidal, dbg);
 
 	if(*dbg)printf("Setting precalculated edges...");
 

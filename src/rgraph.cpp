@@ -9,9 +9,9 @@ extern "C" {
 SEXP spatgraph_c(SEXP Args)
 {
 //.External("spatgraph_c", pp, as.integer(typei), as.numeric(par), preprocessR, as.integer(toroidal), as.integer(doDists), as.integer(dbg))
-	    
+
 	Pp pp;
-	double *prepR, *par;
+	double *prepR, *par, *preDists;
 	int *gtype, *doDists, *toroidal, *dbg;
 	Graph graph;
 
@@ -26,26 +26,29 @@ SEXP spatgraph_c(SEXP Args)
 	par = REAL(CAR(Args)); // graph par
 
 	Args = CDR(Args);
-	prepR = REAL(CAR(Args)); // if preprocessing 
-	
+	prepR = REAL(CAR(Args)); // if preprocessing
+
 	Args = CDR(Args);
 	toroidal = INTEGER(CAR(Args)); // if toroidal correction
-	
+
 	Args = CDR(Args);
 	doDists = INTEGER(CAR(Args)); // if the distances are precalculated and stored
-	
+
+	Args = CDR(Args);
+	preDists = REAL(CAR(Args)); //possible precalculated distances
+
 	Args = CDR(Args);
 	dbg = INTEGER(CAR(Args)); // if debug messages
-				
-//	void Init(Pp *pp0, int *gtype0, double *par, double *prepR, int *doDists, int *toroidal, int *dbg );
-		
-	graph.Init(&pp, gtype, par, prepR, doDists, toroidal, dbg);
+
+
+
+	graph.Init(&pp, gtype, par, prepR, doDists, preDists, toroidal, dbg);
 	graph.sg_calc();
-	
+
 	if(*dbg)printf("\n");
 	return graph.toSEXP();
 }
 
-	
+
 
 }

@@ -4,7 +4,7 @@
 #
 #
 # TODO: - consider including double edges
-#		- how about weighted edges?
+# TODO: - how about weighted edges?
 #
 # Author: Tuomas Rajala  <tarajala@maths.jyu.fi>
 # 150408
@@ -70,17 +70,29 @@ print.sgc<-function(x,...)
 }
 
 ###################################################################
-# symmetrisize
-sg_to_sym<-function(e)
+# symmetrisation
+# wrapper for 1way and 2way symmetrisation
+sg2sym<-function(x, way=1)
 {
-	for(i in 1:length(e$edges) )
-		if(length(e$edges[[i]])>0)
-			for(j in e$edges[[i]])
-				e$edges[[j]]<-union(i,e$edges[[j]])
-	e$symmetric<-TRUE
-	e
+	if(way==1)# symmetrisize with OR : one direction link is enough
+	{
+		for(i in 1:length(x$edges) )
+			if(length(x$edges[[i]])>0)
+				for(j in x$edges[[i]])
+					x$edges[[j]]<-union(i,x$edges[[j]])
+		x$symmetric<-TRUE
+	}
+	else # symmetrisize with AND: remove one direction links
+	{
+		for(i in 1:length(x$edges) )
+			if(length(x$edges[[i]])>0)
+				for(j in x$edges[[i]])
+					if(! (i%in%x$edges[[j]]) )
+						x$edges[[i]]<-setdiff(x$edges[[i]],j)
+		x$symmetric<-TRUE
+	}
+	return(x)
 }
-
 #####################################################################
 # ripped from package 'spatstat', 121108
 verifyclass<-function (X, C, N = deparse(substitute(X)), fatal = TRUE)

@@ -4,6 +4,7 @@
 
 \description{
   Shake (displace) the points a little. Grid like sampling gives problems with e.g. Delauney graph (collinearity).
+  Similar to \code{jitter} in \code{spatstat}
 }
 \details{
   \tabular{ll}{

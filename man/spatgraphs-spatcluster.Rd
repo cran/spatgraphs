@@ -11,7 +11,7 @@
   }
 }
 \arguments{
-\item{e}{spatgraph-object}
+\item{x}{spatgraph-object}
 \item{dbg}{Boolean, print additional messages}
 \item{sym}{Boolean, symmetricise the graph first?}
 }

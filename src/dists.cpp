@@ -55,12 +55,12 @@ double getDist(int *i, int *j, int *n, std::vector<double> *dist)
 
 void calcDists(Pp *pp, std::vector<double> *dist, int *toroidal)
 {
-	int i,j,k, *n;
+	int i,j, *n;
 	double d;
 	n = pp->n;
 	for(i=0;i<*n-1;i++)
 	{
-		k = (int) i*(*n)-i*(i+1)/2;
+//		k = (int) i*(*n)-i*(i+1)/2;
 		for(j=i+1;j<*n;j++)
 		{
 			d = getDist(pp, &i, &j, toroidal);
@@ -69,6 +69,22 @@ void calcDists(Pp *pp, std::vector<double> *dist, int *toroidal)
 	}
 }
 
+/**********************************************************************************/
+void setDists(Pp *pp, std::vector<double> *dist, double *preDists)
+{
+	int i,j, *n;
+	double d;
+	n = pp->n;
+	for(i=0;i<*n-1;i++)
+	{
+//		k = (int) i*(*n)-i*(i+1)/2;
+		for(j=i+1;j<*n;j++)
+		{
+			d = preDists[j-i -1 + (int)(i*(*n)-i*(i+1)/2)];
+			dist->push_back(d);
+		}
+	}
+}
 
 /**********************************************************************************/
 int compare_doubles(const void *a, const void *b)

@@ -4,9 +4,10 @@
 \title{mailer}
 
 \description{
-  Mailer: Unix/Linux only, needs the program 'mail': send an e-mail. Useful to notify ending of long calculation on remote computers.
+  Mailer: Unix/Linux only, needs the program \code{mail}: send an e-mail. 
+  Useful for notifying ending of long calculation on remote computers.
   
-  Took: Nice formatting of time lapsed since given Sys.time-object.
+  Took: One formatting of time lapsed since given Sys.time-object.
 }
 \details{
   \tabular{ll}{

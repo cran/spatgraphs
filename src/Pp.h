@@ -26,6 +26,7 @@ public:
 	virtual ~Pp();
 	void Init(double *x, double *y, double *z, int *type, double *mass0, int *n, double *xlim, double *ylim, double *zlim);
 	void Init(SEXP);
+	SEXP toSEXP();
 };
 
 #endif /*PP_H_*/

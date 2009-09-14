@@ -13,12 +13,6 @@ Compute various graph edge sets for 2D and 3D spatial point patterns such as the
 }
 
 \details{
-  \tabular{ll}{
-    Date: \tab 2008-07-30\cr
-    License: \tab GPL v2 or later\cr
-}
-
-
 This package provides the following graph computations,
 all handled by the spatgraph()-function:
 
@@ -63,6 +57,7 @@ cut					  Cut edges longer than given R>0
 prune				  Prunes the graph, aimed for MST
 sg2dxf				  Write graph to a dxf file
 shortestPath		  Find the shortest edgepath between two points
+sg2igraph             Change the sg-object to igraph-object of package igraph 
 }
 
 }
@@ -79,9 +74,9 @@ Dousse, O., Baccelli, F. \& Thiran, P.:  Impact of Interferences on Connectivity
 Networks. IEEE/ACM Transactions on Networking,13 (2),p. 425-436,2005.
 
 Marchette, D.: Random Graphs for Statistical Pattern Recognition, Wiley 2004.
+
 }
 
-\keyword{ package }
 \seealso{ 
 Spatial point processes in general, see the package 'spatstat'
 

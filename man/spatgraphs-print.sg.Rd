@@ -4,7 +4,7 @@
 \alias{print.sgc}
 \title{print.sg}
 \description{
-  Print method.
+  Print method of sg, sgadj and sgc-object of package spatgraphs.
 }
 \details{
   \tabular{ll}{

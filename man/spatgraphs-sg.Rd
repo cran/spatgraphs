@@ -1,12 +1,9 @@
 \name{spatgraphs-sg}
 \alias{sg}
 \alias{sgadj}
-\alias{tosg}
-\alias{tosgadj}
 \alias{verifyclass}
-\alias{sg_to_sym}
-
 \title{sg}
+
 \description{
   Edge list-of-lists class for spatgraphs. Methods: print, plot.
   
@@ -14,7 +11,7 @@
   
   tosg and tosgadj convert back and fort.
   
-  sg\_to\_sym symmetricises the graph.
+  See also \code{sg2sym}
 }
 \details{
   \tabular{ll}{

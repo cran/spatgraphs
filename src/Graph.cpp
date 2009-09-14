@@ -23,7 +23,7 @@ double Graph::Dist2(int *i, int *j)
 }
 /********************************************************************************************/
 /********************************************************************************************/
-void Graph::Init(Pp *pp0, int *gtype0, double *par0, double *prepR0, int *doDists0, int *toroidal0, int *dbg0)
+void Graph::Init(Pp *pp0, int *gtype0, double *par0, double *prepR0, int *doDists0, double *preDists, int *toroidal0, int *dbg0)
 {
 	if(*dbg0)printf("intializing graph-object... ");
 
@@ -37,7 +37,15 @@ void Graph::Init(Pp *pp0, int *gtype0, double *par0, double *prepR0, int *doDist
 	pdists = &distTriangle;
 	gtype = gtype0;
 	Dist = &Graph::Dist1;  // calculate anew every time
-	if(*doDists)  // distance triangle
+
+	if(preDists[0]>=0)
+	{
+		if(*dbg)printf("Setting precalculated distances...");
+		setDists(pp, pdists, preDists);
+		Dist = &Graph::Dist2;
+		if(*dbg)printf("ok. ");
+	}
+	else if(*doDists)  // distance triangle
 	{
 		if(*dbg)printf("Precalculating distances...");
 		calcDists(pp, pdists,toroidal);
@@ -63,7 +71,6 @@ SEXP Graph::toSEXP()
 //transform a std::vector<std::vector<int> > to SEXP, desctructive
 {
 	SEXP graph, *node;
-
 	PROTECT(graph = allocVector(VECSXP, this->nodelist.size()));
 	int i,j, *p, n;
 	for(i=0;i< (int) this->nodelist.size();i++)
@@ -300,6 +307,8 @@ void Graph::sg_shrink_knn()
 /********************************************************************************************/
 void Graph::sg_gabriel()
 {
+	int kk = (int) par[0];
+	if(*dbg & kk>0)printf("%i-",kk);
 	if(*dbg)printf("Gabriel:");
 	int i,j,k, empty,m,l,h;
 	double x0,y0,R2, d;
@@ -314,7 +323,7 @@ void Graph::sg_gabriel()
 			  y0 = fabs(pp->y[i]-pp->y[j])/2.0+fmin(pp->y[i],pp->y[j]);
 			  R2 = ( pow(pp->x[i]-pp->x[j],2) + pow(pp->y[i]-pp->y[j],2) )/4.0;
 			  //		brute force
-			  empty = 1;
+			  empty = 1+kk;
 			  for(k=0;k<*pp->n;k++)
 			  {
 				  if(k != i)
@@ -323,8 +332,8 @@ void Graph::sg_gabriel()
 						  d = pow(x0-pp->x[k],2) + pow(y0-pp->y[k],2);
 						  if( d<R2 )
 						  {
-							  empty = 0;
-							  break;
+							  empty = empty - 1;
+							  if(empty == 0) break;
 						  }
 					  }
 			  }
@@ -345,7 +354,7 @@ void Graph::sg_gabriel()
 				x0 = fabs(this->pp->x[i]-this->pp->x[j])/2.0+fmin(this->pp->x[i],this->pp->x[j]);
 				y0 = fabs(this->pp->y[i]-this->pp->y[j])/2.0+fmin(this->pp->y[i],this->pp->y[j]);
 				R2 = (pow(this->pp->x[i]-this->pp->x[j],2) + pow(this->pp->y[i]-this->pp->y[j],2) )/4.0;
-				empty = 1;
+				empty = 1+kk;
 				for(m=0; m <(int) this->nodelist[i].size();m++) // the small ball is included in the preprocessing ball
 				{
 					k =  (int) this->nodelist[i][m]-1;
@@ -355,8 +364,8 @@ void Graph::sg_gabriel()
 							d = pow(x0-pp->x[k],2) + pow(y0-pp->y[k],2);
 							if( d<R2 )
 							{
-								empty = 0;
-								break;
+								empty = empty - 1;
+								if(empty == 0) break;
 							}
 						}
 				}
@@ -433,10 +442,8 @@ void Graph::sg_MST()
   done[0] = 0;
   dn = 1;
   int left=*this->pp->n-dn;
-//   double sum;
   while( left > 0 )
   {
-    //if(*print_sg) if((left+1)%100==0) printf("MST: %i/%i         \r",left,*n);
     apu2 = MAX_DOUBLE;
     for(i=1; i<*this->pp->n;i++){
       zz = 1;
@@ -446,7 +453,7 @@ void Graph::sg_MST()
           zz=0;
           break;
         }
-        apu1 = (this->*Dist)(&i,&done[j]); //dists[i*(*n)+done[j]];
+        apu1 = (this->*Dist)(&i,&done[j]);
         if( apu1<apu0 ){
           apu0=apu1;
           k0=i;
@@ -461,13 +468,10 @@ void Graph::sg_MST()
         }
       }
     }
-//     sum+=apu2;
     done[dn] = k;
     dn++;
     left--;
     this->nodelist[l].push_back(k+1);
-    //e[l*(*n)+k] = 1;
-//     printf("\r");
   }
   if(*this->dbg)printf(" Ok.");
 }

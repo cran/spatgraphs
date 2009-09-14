@@ -1,7 +1,5 @@
 \name{spatgraphs-plot.sg}
 \alias{plot.sg}
-\alias{plot_sg}
-\alias{plot_sgc}
 \alias{plot.sgc}
 \alias{plot.sgadj}
 \title{plot.sg}

@@ -7,11 +7,12 @@
 ###############################################################################
 
 
-shortestPath<-function(pp, i, j, g=NULL, dbg=FALSE, ...)
+shortestPath<-function(i, j, g, pp=NULL, dbg=FALSE, ...)
 {
-	if(is.null(g)) g<-spatgraph(pp, ...)
-	if(!(i%in%1:pp$n)| !(j%in%1:pp$n) | i==j) stop("Give i,j different and between 1,...,n.")
-	
+	if(missing(g)&&is.null(pp))stop("Need one: graph g or point pattern pp.")
+	if(missing(g)) g<-spatgraph(pp, ...)
+	if(!(i%in%1:g$N)| !(j%in%1:g$N) | i==j) stop("Give i,j different and between 1,...,n.")
+	g<-sg2sym(g)
 	e<-spatcluster(g)
 	
 	for(k in 1:length(e$clusters))
@@ -21,7 +22,8 @@ shortestPath<-function(pp, i, j, g=NULL, dbg=FALSE, ...)
 	
 	if(!(j%in%e$clusters[[k]])) return(Inf);
 	
-	d<-as.matrix(dist(cbind(pp$x,pp$y),upper=TRUE))
+	if(is.null(pp)) d<-matrix(1,g$N,g$N)-diag(g$N)
+	else d<-as.matrix(dist(cbind(pp$x,pp$y),upper=TRUE))
 	
 	cluster<-e$clusters[[k]]
 	
@@ -42,12 +44,13 @@ shortestPath<-function(pp, i, j, g=NULL, dbg=FALSE, ...)
 	while(sum(left)>0)
 	{
 		u<-which(min(dists[left])==dists)
+		u<-u[ceiling(runif(1)*length(u))]
 		uu<-cluster[u]
+		
 		for(vv in g$edges[[uu]])
 		{
 			alt = dists[u] + d[uu,vv]
 			v<-which(cluster==vv)
-			
 			if(alt < dists[v])
 			{
 				dists[v]<-alt

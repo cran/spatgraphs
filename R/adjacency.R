@@ -8,7 +8,7 @@
 ##############################################################################
 
 
-tosgadj<-function(x)
+sg2adj<-function(x)
 {
 	verifyclass(x,"sg")
 	A<-diag(0,x$N)
@@ -19,7 +19,7 @@ tosgadj<-function(x)
 	sgadj(A,type=x$type,pars=x$parameters,sym=x$symmetric)
 }
 
-tosg<-function(x)
+adj2sg<-function(x)
 {
 	verifyclass(x,"sgadj")
 	A<-list()
@@ -60,5 +60,7 @@ print.sgadj<-function(x,...)
 ##############################################################################
 plot.sgadj<-function(x,...)
 {
-	plot.sg(tosg(x),...)
+	plot.sg(adj2sg(x),...)
 }
+
+# eof

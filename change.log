@@ -1,3 +1,28 @@
+v2.27:
+ - tidy up documentation
+ - remove unused code
+ - rename sg_to_sym to 'sg2sym' and add way-parameter
+ - parameter name for graph, 'e', changed to 'x' in functions 
+
+v2.26:
+ - added sg_to_sym_2way symmetrisation (mutual neighbours)
+v2.25:
+ - add a png-capture to spin3d()
+v2.24:
+ - fixed the plotting with rgl: no more additional plot
+ - added the possibility to provide the symmetric distance matrix
+ - improved sg2igraph, sg2adj and adj2sg
+ 
+v2.23
+ - add interface to igraph , sg2igraph() and igraph2sg()
+ 
+v2.22:
+ - modified Gabriel to k-Gabriel graph
+v2.21:
+ - added the plot.new-check to plot.sg
+v2.2:
+ - plot only clusters with atleast 'atleast=1' points.
+ - shortestPath now forces the graph to symmetric
 v2.1:
  - renumber, stable release.
  - fix print.sgc for RST parameter
