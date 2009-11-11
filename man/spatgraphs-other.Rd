@@ -1,5 +1,6 @@
 \name{spatgraphs-other}
 \alias{sg2sym}
+\alias{edgeLengths}
 \alias{sg.edgelengths}
 
 \title{Make the graph symmetric/compute edge lengths}
@@ -7,7 +8,7 @@
 \description{
 \code{sg2sym} makes the graph symmetric.
 
-\code{sg.edgelengths} returns the distances of edge-connected points as a list x such that distance(x\$i,x\$j)=x\$d 
+\code{edgeLengths} returns the distances of edge-connected points as a list x such that distance(x\$i,x\$j)=x\$d 
 }
 \details{
   \tabular{ll}{
@@ -17,7 +18,7 @@
 }
 \usage{
    sg2sym(x, way=1)
-   sg.edgelengths(x, pp, ...)
+   edgeLengths(x, pp, ...)
 }
 \arguments{
 \item{x}{sg-object.}

@@ -125,7 +125,7 @@ int Empty(double *x, double *y, int *n, int i, int j, int k, double *x00, double
 	R20[0] = R2;
 	for(m=0;m<*n;m++)
 	{
-		if(m!=i & m!=j & m!=k)
+		if( (m!=i) & (m!=j) & (m!=k))
 		{
 			d2 = pow(x0-x[m],2)+pow(y0-y[m],2);
 			if(d2<R2) return 0;

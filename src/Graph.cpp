@@ -308,7 +308,7 @@ void Graph::sg_shrink_knn()
 void Graph::sg_gabriel()
 {
 	int kk = (int) par[0];
-	if(*dbg & kk>0)printf("%i-",kk);
+	if(*dbg & (kk>0) )printf("%i-",kk);
 	if(*dbg)printf("Gabriel:");
 	int i,j,k, empty,m,l,h;
 	double x0,y0,R2, d;
@@ -554,7 +554,7 @@ void Graph::sg_RNG()
         {
         	isempty = 1;
         	for(k=0;k<*pp->n;k++)
-        		if(k!=i&k!=j)
+        		if( (k!=i) & (k!=j) )
         			if((this->*Dist)(&i,&k) < (this->*Dist)(&i,&j))
         				if((this->*Dist)(&j,&k) < (this->*Dist)(&j,&i))
         				{isempty=0;break;}
@@ -579,7 +579,7 @@ void Graph::sg_CCC()
 		{
 			pp->mass[i]=MAX_DOUBLE;
 			for(j=0;j<*pp->n;j++)
-				if(j!=i & pp->type[j]!=type0) pp->mass[i]=fminf(pp->mass[i],(this->*Dist)(&i,&j));
+				if( (j!=i) & (pp->type[j]!=type0) ) pp->mass[i]=fminf(pp->mass[i],(this->*Dist)(&i,&j));
 		}
 	}
 	for(i=0;i<*pp->n;i++) //TODO: optimize this

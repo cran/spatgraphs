@@ -2,7 +2,10 @@
 \alias{sg}
 \alias{sgadj}
 \alias{verifyclass}
+\alias{summary.sg}
+\alias{summary.sgc}
 \title{sg}
+
 
 \description{
   Edge list-of-lists class for spatgraphs. Methods: print, plot.

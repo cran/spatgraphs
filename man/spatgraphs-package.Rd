@@ -24,7 +24,8 @@ all handled by the spatgraph()-function:
  Mass geometric         ||x-y||<m(x)                 
  Spheres of Influence   ||x-y||<d(x)+d(y)            
  Mark crossing          ||x-y||<m(x)+m(y)            
- k-Nearest neighbour    x in knn(y)                  
+ k-Nearest neighbour    x in knn(y)
+ Relative Neighbourhood see refs.                 
  Radial spanning tree   see refs.            
  Minimum spanning tree  see refs.            
  Gabriel graph          see refs.            

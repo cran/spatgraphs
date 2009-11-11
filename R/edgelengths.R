@@ -4,8 +4,8 @@
 #
 # Author: Tuomas Rajala <tuomas.a.rajala@jyu.fi>
 ###############################################################################
-
-sg.edgelengths<-function(x, pp, ...)
+sg.edgelengths<-
+edgeLengths<-function(x, pp, ...)
 {
 	if(missing(pp)) stop("Need 'pp' for distances.")
 	verifyclass(x,"sg")

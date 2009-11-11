@@ -1,3 +1,14 @@
+v2.30:
+ - tidy up compiler warnings
+ - update documentation 
+ 
+v2.29:
+ - added 'directed' to plot arrows
+ - added summary for 'sgc'
+
+v2.28:
+ - added the summary function for 'sg'
+ 
 v2.27:
  - tidy up documentation
  - remove unused code

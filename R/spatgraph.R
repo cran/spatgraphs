@@ -59,7 +59,7 @@ spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=
 #
 ########################################################################################
 # default parameter if NULL is given
-sg_default_par<-function(pp,type)
+sg_default_par<-function(pp, type)
 {
 	lambda<-pp$n/((pp$window$x[2]-pp$window$x[1])*(pp$window$y[2]-pp$window$y[1]))
 	defaults<-list(R=1/sqrt(lambda), k=4, none=0, k=0, none=0, none=0, none=0, none=0, 

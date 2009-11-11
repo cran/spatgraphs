@@ -6,7 +6,7 @@
 # 080608
 ###############################################################################
 
-plot.sg<-function(x, pp, which=NULL,...)
+plot.sg<-function(x, pp, which=NULL, directed=0, ...)
 # plot the edges on top of a point pattern pp
 {
 	
@@ -17,12 +17,26 @@ plot.sg<-function(x, pp, which=NULL,...)
 		for(i in which)
 		{
 			s<-x$edges[[i]]
-			x0<-pp[['x']][s]
-			y0<-pp[['y']][s]
 			n<-length(s)
-			x0<-as.vector( rbind(rep(pp[['x']][i],length(s)),x0 ))
-			y0<-as.vector( rbind(rep(pp[['y']][i],length(s)),y0 ))
-			lines(x0, y0, ... )
+			if(directed==0) # no arrows
+			{
+				x0<-pp[['x']][s]
+				y0<-pp[['y']][s]
+				
+				x0<-as.vector( rbind(rep(pp[['x']][i],n),x0 ))
+				y0<-as.vector( rbind(rep(pp[['y']][i],n),y0 ))
+				lines(x0, y0, ... )
+			}
+			else # arrows
+			{
+				n<-length(s)
+				x0<-rep(pp[['x']][i],n)
+				y0<-rep(pp[['y']][i],n)
+				x1<-pp[['x']][s]
+				y1<-pp[['y']][s]
+				arrows(x0, y0, x1, y1, length=directed, ... )
+			}
+			
 		}
 	}
 	else #3d

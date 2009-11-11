@@ -16,6 +16,7 @@
 \arguments{
 \item{x}{spatgraph/spatcluster object}
 \item{pp}{point pattern}
+\item{directed}{Draw arrows with this size. If 0, no arrows.}
 \item{...}{color, linesize etc. for corresponding function (lines, points, points3d).}
 }
 \keyword{spatial}
