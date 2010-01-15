@@ -21,7 +21,7 @@ SEXP sg_cluster(SEXP Args)
 
 	clustlist.resize(nodelist.size());
 	int n=nodelist.size();
-	int koot[n];
+	int *koot = new int[n];
 	int i,j,k;
 	if(*dbg) printf("Clustering: ");
 	for(i=0;i<n;i++) { koot[i]=0;};

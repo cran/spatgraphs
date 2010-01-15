@@ -11,7 +11,7 @@
  *
  * ****************/
 
-#import "dists.h"
+#include "dists.h"
 
 //double getDist0(double *x, double *y, double *z, int *n, int *i, int *j, std::vector<double> *dist)
 //{

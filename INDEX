@@ -1,19 +1,16 @@
-ccc_graph               ccc\_graph
-clusfun                 clusfun
-confun                  confun
-cumconfun               cumconfun
-mst_cut                 mst\_cut
-mst_prune               mst\_prune
-plot_clusters           plot\_clusters
-plot_graph              plot\_graph
+adj2sg                  Adjacency matrix to edgelist and vice versa
+cut.sg                  cut and prune
+mailer                  mailer
+plot.sg                 plot.sg
 print.sg                print.sg
-print.sgc               print.sgc
-runif3d                 runif3d
+runif3d                 runif3d and spin3d
 sg                      sg
-sg_dists                sg\_dists
+sg2dxf                  sg2dxf
+sg2igraph               sg2igraph
+sg2sym                  Make the graph symmetric/compute edge lengths
 sgc                     sgc
-sgcluster               sgcluster
-sgclusterlist           sgclusterlist
+shake                   shake
+shortestPath            Shortest path between nodes i and j
+spatcluster             spatcluster
 spatgraph               spatgraph
 spatgraphs-package      Graphs for spatial point patterns
-spin3d                  spin3d

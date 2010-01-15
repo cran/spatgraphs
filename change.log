@@ -1,3 +1,6 @@
+v2.31:
+ - fix sun compiler errors with variable vector size 
+ 
 v2.30:
  - tidy up compiler warnings
  - update documentation 
