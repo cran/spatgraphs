@@ -22,6 +22,11 @@
 //	else
 //		return sqrt(pow(x[*i]-x[*j],2) + pow(y[*i]-y[*j],2)+pow(z[*i]-z[*j],2) );
 //}
+double fmin(double a, double b)
+{
+	if(a < b) return a;
+	else return b;
+}
 
 /**********************************************************************************/
 

@@ -1,4 +1,7 @@
 v2.31:
+ - fix some more sun compiler errors: added fmin-function to dists.cpp, for some reason is not defined in non-GNU math.h 
+
+v2.31:
  - fix sun compiler errors with variable vector size 
  
 v2.30:

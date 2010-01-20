@@ -248,7 +248,7 @@ void Graph::sg_knn()
 	if(*prepR==0)// if not preprocessed
 	{
 		if(*dbg)printf("%i-nn:",*k);
-		double dists2_i[*pp->n], dists2_i2[*pp->n];
+		double *dists2_i = new double[*pp->n], *dists2_i2 = new double[*pp->n];
 		for(i=0;i<*pp->n;i++) //for each point
 		{
 			for(j=0;j<*pp->n;j++) dists2_i2[j]=dists2_i[j]= (this->*Dist)(&i,&j); //gather the distances to others
@@ -437,7 +437,7 @@ void Graph::sg_MST()
 {
   if(*this->dbg) printf("MST:");
   int i,j,k=0,l=0,zz,k0=0,l0=0;
-  int done[*this->pp->n],dn;
+  int *done = new int[*this->pp->n],dn;
   double apu0,apu1,apu2;
   done[0] = 0;
   dn = 1;
@@ -502,7 +502,7 @@ void Graph::sg_SIG()
 	{
 		dist = MAX_DOUBLE;
 		for(j=0;j<*pp->n;j++)
-			if(i!=j) dist = fminf(dist, (this->*Dist)(&i,&j));
+			if(i!=j) dist = fmin(dist, (this->*Dist)(&i,&j));
 		pp->mass[i]=dist;
 	}
 	*dbg=0;
@@ -579,7 +579,7 @@ void Graph::sg_CCC()
 		{
 			pp->mass[i]=MAX_DOUBLE;
 			for(j=0;j<*pp->n;j++)
-				if( (j!=i) & (pp->type[j]!=type0) ) pp->mass[i]=fminf(pp->mass[i],(this->*Dist)(&i,&j));
+				if( (j!=i) & (pp->type[j]!=type0) ) pp->mass[i]=fmin(pp->mass[i],(this->*Dist)(&i,&j));
 		}
 	}
 	for(i=0;i<*pp->n;i++) //TODO: optimize this
@@ -601,7 +601,7 @@ void Graph::sg_STIR()
 {
 	if(*dbg) printf("Signal-To-Noise-Ratio graph, noise=%f,alpha=%f,beta=%f,gamma=%f: ",par[0],par[1],par[2],par[3]);
 	int i,j;
-	double noise0 = par[0], alpha=par[1],beta=par[2],gamma=par[3], noise[*pp->n], sij,sji,s;
+	double noise0 = par[0], alpha=par[1],beta=par[2],gamma=par[3], *noise = new double[*pp->n], sij,sji,s;
 	//first we compute the interference for each location including the sending transmitter
 	for(i=0;i<*pp->n;i++)
 	{
@@ -617,7 +617,7 @@ void Graph::sg_STIR()
 			sji = pp->mass[j]*Attenuate((this->*Dist)(&i,&j),alpha);
 			sij = sij/(noise0 + gamma* (noise[j]-sij));
 			sij = sji/(noise0 + gamma* (noise[i]-sji));
-			s = fminf(sij,sji);
+			s = fmin(sij,sji);
 			if(s >= beta )
 			{
 				addNew(i,j+1);
