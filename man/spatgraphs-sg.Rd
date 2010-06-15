@@ -1,6 +1,10 @@
 \name{spatgraphs-sg}
 \alias{sg}
 \alias{sgadj}
+\alias{sg2adj}
+\alias{adj2sg}
+\alias{t.sg}
+\alias{t.sgadj}
 \alias{verifyclass}
 \alias{summary.sg}
 \alias{summary.sgc}
@@ -12,7 +16,9 @@
   
   Older version used adjacency matrix, this class is now called sgadj.
   
-  tosg and tosgadj convert back and fort.
+  adj2sg and sg2adj convert back and fort. 
+  
+  The edges can be transposed with method \code{t}.
   
   See also \code{sg2sym}
 }

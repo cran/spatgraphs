@@ -6,14 +6,21 @@
 # 080608
 ###############################################################################
 
-plot.sg<-function(x, pp, which=NULL, directed=0, ...)
+plot.sg<-function(x, pp, add=TRUE, which=NULL, directed=0, 
+		          add.points=FALSE, points.col="blue", points.pch=19, points.cex=1, lines.col="gray70",...)
 # plot the edges on top of a point pattern pp
 {
 	
 	if(is.null(which))which<-1:length(x$edges)
     if(is.null(pp[['z']])| length(pp[['z']])!=length(pp[['x']]))
 	{
-		if(names(dev.cur())=="null device")plot(pp$x,pp$y,cex=.9,pch=19, xlab="",ylab="")
+		if(!add)
+		{
+			if(is.null(pp$window$x))pp$window$x<-range(pp$x)
+			if(is.null(pp$window$y))pp$window$y<-range(pp$y)
+			plot(NA, NA,cex=0.01, xlim=pp$window$x, ylim=pp$window$y, asp=1, xlab="x", ylab="y")
+			add.points<-TRUE
+		}
 		for(i in which)
 		{
 			s<-x$edges[[i]]
@@ -25,7 +32,7 @@ plot.sg<-function(x, pp, which=NULL, directed=0, ...)
 				
 				x0<-as.vector( rbind(rep(pp[['x']][i],n),x0 ))
 				y0<-as.vector( rbind(rep(pp[['y']][i],n),y0 ))
-				lines(x0, y0, ... )
+				lines(x0, y0, col=lines.col, ... )
 			}
 			else # arrows
 			{
@@ -36,7 +43,10 @@ plot.sg<-function(x, pp, which=NULL, directed=0, ...)
 				y1<-pp[['y']][s]
 				arrows(x0, y0, x1, y1, length=directed, ... )
 			}
-			
+		}
+		if(add.points)
+		{
+			points(pp$x, pp$y, pch=points.pch, col=points.col, cex=points.cex)
 		}
 	}
 	else #3d
@@ -55,24 +65,31 @@ plot.sg<-function(x, pp, which=NULL, directed=0, ...)
 }
 
 # plot clusters
-plot.sgc<-function(x, pp, atleast=2, spheres=FALSE,...)
+plot.sgc<-function(x, pp, atleast=2, add=TRUE, pch=19, cex=1, spheres=FALSE, col, ...)
 {
-	w<-(1:x$nclusters)[lapply(x$clusters,length)>=atleast]
+	w<-(1:x$nclusters)[sapply(x$clusters,length)>=atleast]
+	n<-x$nclusters
 	j<-1
-	if(is.null(pp[['z']])| length(pp[['z']])!=length(pp[['x']]))
+	if(missing(col))col<-rgb(red=runif(n,0.1,1),green=runif(n,0.1,1), blue=runif(n,0.1,1) )
+	
+	if(is.null(pp[['z']])| length(pp[['z']])!=length(pp[['x']])){
+		if(!add)
+		{
+			if(is.null(pp$window$x))pp$window$x<-range(pp$x)
+			if(is.null(pp$window$y))pp$window$y<-range(pp$y)
+			plot(NA, NA,cex=0.01, xlim=pp$window$x, ylim=pp$window$y, asp=1, xlab="x", ylab="y")
+		}	
 		for(i in w)
 		{
-			points(pp$x[x$clusters[[i]]],pp$y[x$clusters[[i]]],col=j,...)
-			j<-j+1
+			points(pp$x[x$clusters[[i]]],pp$y[x$clusters[[i]]],col=col[i], pch=pch, cex=cex, ...)
 		}
-	else
-	{
+	}
+	else{
 		if(spheres)f<-spheres3d
 		else f<-points3d
 		for(i in w)
 		{
-			f(pp$x[x$clusters[[i]]],pp$y[x$clusters[[i]]],pp$z[x$clusters[[i]]],col=j,...)
-			j<-j+1
+			f(pp$x[x$clusters[[i]]],pp$y[x$clusters[[i]]],pp$z[x$clusters[[i]]],col=col[i],...)
 		}
 	}
 }

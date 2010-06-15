@@ -3,7 +3,7 @@
 \title{shake}
 
 \description{
-  Shake (displace) the points a little. Grid like sampling gives problems with e.g. Delauney graph (collinearity).
+  Shake (displace) the points a little. Grid like sampling gives problems with e.g. Delaunay graph (collinearity).
   Similar to \code{jitter} in \code{spatstat}
 }
 \details{

@@ -1,14 +1,19 @@
 \name{spatgraphs-runif3d}
 \alias{runif3d}
-\alias{spin3d}
-\title{runif3d and spin3d}
+\title{runif3d}
 
 \description{
   Simple simulation of uniform 3d point pattern.
-  
-  spin3d simply spins the rgl-scenery.
+}
+\usage{
+runif3d(n = c(10), window = list(x = c(0, 1), y = c(0, 1), z = c(0, 1)))
+}
+\arguments{
+\item{n}{Vector of point counts, e.g. c(10,10) is two type pattern with 10 points per type.}
+\item{window}{Rectangular cuboid window limits.}
 }
 \details{
+ Simulates uniformly distributed points in 3d rectangle.
   \tabular{ll}{
     Date: \tab 2008-07-30\cr
     License: \tab GPL v2 or later\cr

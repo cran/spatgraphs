@@ -30,7 +30,7 @@ all handled by the spatgraph()-function:
  Minimum spanning tree  see refs.            
  Gabriel graph          see refs.            
  Class cover catch      see refs.            
- Delauney triangulation see refs.
+ Delaunay triangulation see refs.
  Signal-to-noise-ratio  see refs.
 
 where 
@@ -38,27 +38,29 @@ where
     m(x) ~ mass, size i.e. real mark of x
     d(x) ~ the distance to the nearest neighbour of x.
     knn(x) ~ the k nearest neighbours set of x    
-
+}
 The minimum spanning tree is computed using Prim's algorithm.
 
-The classes sg and sgc are defined, with their own plot- and print-methods.
-For adjacency matrices there is a class sgadj. This is mainly unused due to
-the memory requirements.
+The classes sg and sgc are defined, with their own plot- and print-methods. 3D plotting
+requires package \code{rgl}.
 
-Also included are the following functions (3d stuff requires rgl):
+For adjacency matrices see functions sg2adj and adj2sg. 
 
+Also included are the following functions:
+\preformatted{
 Function name          Description
 ----------------------------------------------------------
-spin3d                Little program to animate the rgl-3d image
-runif3d				  Simple 3d uniform pp generation
-spatcluster           Compute clusters from adjacency matrix
-tosgadj				  Convert to adjacency matrix form
-tosg				  Convert to edge list from sgadj
-cut					  Cut edges longer than given R>0
-prune				  Prunes the graph, aimed for MST
-sg2dxf				  Write graph to a dxf file
-shortestPath		  Find the shortest edgepath between two points
+spatcluster           Compute clusters (connected components)
+shortestPath          Find the shortest edgepath between two points
+edgeLengths           Lenghts of edges in a graph
+sg2sym                Make the edges symmetric
+sg2adj                Convert to adjacency matrix form
+adj2sg                Convert to edge list from sgadj
+cut                   Cut edges longer than given R>0
+prune                 Prunes the graph, aimed for MST
+sg2dxf                Write graph to a dxf file
 sg2igraph             Change the sg-object to igraph-object of package igraph 
+runif3d               Simple 3d uniform pp generation
 }
 
 }
@@ -81,7 +83,7 @@ Marchette, D.: Random Graphs for Statistical Pattern Recognition, Wiley 2004.
 \seealso{ 
 Spatial point processes in general, see the package 'spatstat'
 
-For more versatile Voronoi/Delauney handling, see the package 'tripack'
+For more versatile Voronoi/Delaunay handling, see the package 'tripack'
 
 The package 'rgl' is required for 3D-plotting.
 }
@@ -116,6 +118,5 @@ The package 'rgl' is required for 3D-plotting.
 	plot(e,pp3d,col="plum")
   }
   #graph_example3d()
-  #spin3d()
 }
 \keyword{spatial}

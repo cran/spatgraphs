@@ -22,7 +22,7 @@
 //	else
 //		return sqrt(pow(x[*i]-x[*j],2) + pow(y[*i]-y[*j],2)+pow(z[*i]-z[*j],2) );
 //}
-double fmin(double a, double b)
+double fmin2(double a, double b)
 {
 	if(a < b) return a;
 	else return b;
@@ -36,14 +36,14 @@ double getDist(Pp *pp, int *i, int *j, int *toroidal)
 	if(*i>*j) return getDist(pp, j, i, toroidal);
 	if(*toroidal)
 		return	sqrt(
-					pow( fminf( pp->xlim[1]-pp->xlim[0]-fabs(pp->x[*i]-pp->x[*j]) , fabs(pp->x[*i]-pp->x[*j]) ) ,2.0) +
-					pow( fminf( pp->ylim[1]-pp->ylim[0]-fabs(pp->y[*i]-pp->y[*j]) , fabs(pp->y[*i]-pp->y[*j]) ) ,2.0) +
-					pow( fminf( pp->zlim[1]-pp->zlim[0]-fabs(pp->z[*i]-pp->z[*j]) , fabs(pp->z[*i]-pp->z[*j]) ) ,2.0)   );
+					pow( fminf( pp->xlim[1]-pp->xlim[0]-fabs(pp->getX(i)-pp->getX(j)) , fabs(pp->getX(i)-pp->getX(j)) ) ,2.0) +
+					pow( fminf( pp->ylim[1]-pp->ylim[0]-fabs(pp->getY(i)-pp->getY(j)) , fabs(pp->getY(i)-pp->getY(j)) ) ,2.0) +
+					pow( fminf( pp->zlim[1]-pp->zlim[0]-fabs(pp->getZ(i)-pp->getZ(j)) , fabs(pp->getZ(i)-pp->getZ(j)) ) ,2.0)   );
 	else
 		return 	sqrt(
-				pow( pp->x[*i]- pp->x[*j]  ,2.0) +
-				pow( pp->y[*i]- pp->y[*j]  ,2.0) +
-				pow( pp->z[*i]- pp->z[*j]  ,2.0)   );
+				pow( pp->getX(i)- pp->getX(j)  ,2.0) +
+				pow( pp->getY(i)- pp->getY(j)  ,2.0) +
+				pow( pp->getZ(i)- pp->getZ(j)  ,2.0)   );
 
 }
 /**********************************************************************************/
@@ -60,13 +60,13 @@ double getDist(int *i, int *j, int *n, std::vector<double> *dist)
 
 void calcDists(Pp *pp, std::vector<double> *dist, int *toroidal)
 {
-	int i,j, *n;
+	int i,j, n;
 	double d;
-	n = pp->n;
-	for(i=0;i<*n-1;i++)
+	n = pp->size();
+	for(i=0;i<n-1;i++)
 	{
 //		k = (int) i*(*n)-i*(i+1)/2;
-		for(j=i+1;j<*n;j++)
+		for(j=i+1;j<n;j++)
 		{
 			d = getDist(pp, &i, &j, toroidal);
 			dist->push_back(d);
@@ -77,28 +77,28 @@ void calcDists(Pp *pp, std::vector<double> *dist, int *toroidal)
 /**********************************************************************************/
 void setDists(Pp *pp, std::vector<double> *dist, double *preDists)
 {
-	int i,j, *n;
+	int i,j, n;
 	double d;
-	n = pp->n;
-	for(i=0;i<*n-1;i++)
+	n = pp->size();
+	for(i=0;i<n-1;i++)
 	{
 //		k = (int) i*(*n)-i*(i+1)/2;
-		for(j=i+1;j<*n;j++)
+		for(j=i+1;j<n;j++)
 		{
-			d = preDists[j-i -1 + (int)(i*(*n)-i*(i+1)/2)];
+			d = preDists[j-i -1 + (int)(i*n-i*(i+1)/2)];
 			dist->push_back(d);
 		}
 	}
 }
 
 /**********************************************************************************/
-int compare_doubles(const void *a, const void *b)
-{
-  const double *da = (const double *) a;
-  const double *db = (const double *) b;
-
-  return (*da > *db) - (*da < *db);
-}
+//int compare_doubles(const void *a, const void *b)
+//{
+//  const double *da = (const double *) a;
+//  const double *db = (const double *) b;
+//
+//  return (*da > *db) - (*da < *db);
+//}
 
 /**********************************************************************************/
 

@@ -4,15 +4,18 @@
 
 \description{
   Find the shortest edgeconnected path between two given nodes/points with indices i and j (in pp). 
+
+}
+\usage{
+  shortestPath(i, j, g, pp=NULL, dbg=FALSE)
   
 }
   \arguments{
-  \item{pp}{Point pattern, as \code{ppp} in \code{spatstat}.}
   \item{i}{The start node of the path to find.}
   \item{j}{The target node of the path to find.}
-  \item{g=NULL}{Graph which defines the edges. If NULL computes one for given additional parameters.}
-  \item{...}{Passed on to \code{spatgraph} if g is not given.}
-  
+  \item{g}{Graph which defines the edges.}
+  \item{pp}{Point pattern. If given, the edges are of Euclidian length, otherwise each edge is of length 1.}
+  \item{dbg}{Print additional messages.}
   }
 
 \details{
@@ -20,7 +23,11 @@
     Date: \tab 2008-09-25\cr
     License: \tab GPL v2 or later\cr
   }
-  Make sure the graph is symmetric. Value is the sum of Euclidian lenghts of the edges in the shortest path. The algorithm is Dijkstra\'s algorithm.
+  Returns the distance and edges along the shortest path.
+  
+  Make sure the graph is symmetric.  
+  
+  The algorithm is Dijkstra\'s algorithm.
 }
 \references{
 E. W. Dijkstra: A note on two problems in connexion with graphs. 'Numerische Mathematik', 1 (1959), p. 269-271.

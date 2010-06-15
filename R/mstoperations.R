@@ -20,9 +20,8 @@ cut.sg<-function(x, ..., pp, R=NULL,doDists=FALSE, toroidal=FALSE, dbg=FALSE)
 
 
 # init prune if the method does not exist
-#	if(!exists("prune")) 
-#	prune<-function(x,...) base::UseMethod("prune")
-
+if(!exists("prune")) 
+prune<-function(x,...) base::UseMethod("prune")
 
 # prune
 prune.sg<-function(x, ..., pp, level=1, doDists=FALSE, toroidal=FALSE, dbg=FALSE)

@@ -1,6 +1,5 @@
 #include <R.h>
 #include "Graph.h"
-#include "dists.h"
 #include "Pp.h"
 
 
@@ -14,6 +13,7 @@ SEXP spatgraph_c(SEXP Args)
 	double *prepR, *par, *preDists;
 	int *gtype, *doDists, *toroidal, *dbg;
 	Graph graph;
+	SEXP preGraph;
 
 //start parsing the args
 	Args = CDR(Args);
@@ -35,7 +35,10 @@ SEXP spatgraph_c(SEXP Args)
 	doDists = INTEGER(CAR(Args)); // if the distances are precalculated and stored
 
 	Args = CDR(Args);
-	preDists = REAL(CAR(Args)); //possible precalculated distances
+ 	preDists = REAL(CAR(Args)); //possible precalculated distances
+
+ 	Args = CDR(Args);
+ 	preGraph = CAR(Args); //possibly precalculated edges
 
 	Args = CDR(Args);
 	dbg = INTEGER(CAR(Args)); // if debug messages
@@ -43,6 +46,12 @@ SEXP spatgraph_c(SEXP Args)
 
 
 	graph.Init(&pp, gtype, par, prepR, doDists, preDists, toroidal, dbg);
+
+	if(!isNull(preGraph))
+	{
+		graph.setNodelist(preGraph);
+	}
+
 	graph.sg_calc();
 
 	if(*dbg)printf("\n");

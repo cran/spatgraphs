@@ -27,12 +27,14 @@ sg2igraph<-function(g,pp=NULL)
 	{
 		x<-pp$x
 		y<-pp$y
-		z<-ifelse(is.null(pp$z),pp$x*0,pp$z)
-		mark<-pp$m
-		actors<-data.frame(names=as.character((1:pp$n)-1),x=x,y=y,z=z,mark=mark)
+		if(is.null(pp$z))pp$z<-pp$x*0
+		z<-pp$z
+		if(is.null(pp$marks))pp$marks<-pp$x*0
+		mark<-pp$marks
+		actors<-data.frame(names=as.character((1:length(x))-1),x=x,y=y,z=z,mark=mark)
 	}
 	
-	a<-graph.data.frame(elist,vertices=actors, directed=FALSE)
+	a<-graph.data.frame(elist, vertices=actors, directed=FALSE)
 	a$N<-g$N
 	a$parameters<-g$parameters
 	a$type<-g$type
@@ -46,5 +48,5 @@ igraph2sg<-function(g)
 	for(i in 1:length(b))
 		b[[i]]<-union(b[[i]]+1,NULL)
 	
-	sg(b, type=g$type, pars=g$parameters)
+	sg(b, type=g$type, pars=g$parameters, note="coverted from igraph-object")
 }

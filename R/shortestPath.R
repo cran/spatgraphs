@@ -7,10 +7,9 @@
 ###############################################################################
 
 
-shortestPath<-function(i, j, g, pp=NULL, dbg=FALSE, ...)
+shortestPath<-function(i, j, g, pp=NULL, dbg=FALSE)
 {
-	if(missing(g)&&is.null(pp))stop("Need one: graph g or point pattern pp.")
-	if(missing(g)) g<-spatgraph(pp, ...)
+	if(missing(g))stop("Give a graph g.")
 	if(!(i%in%1:g$N)| !(j%in%1:g$N) | i==j) stop("Give i,j different and between 1,...,n.")
 	g<-sg2sym(g)
 	e<-spatcluster(g)

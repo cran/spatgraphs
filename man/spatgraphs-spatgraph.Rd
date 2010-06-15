@@ -15,8 +15,7 @@
   }
 }
 \usage{
- spatgraph(pp, type = "knn", par = NULL, preprocessR = 0, dbg = FALSE,
-    doDists = FALSE, preDists = NULL, toroidal = FALSE)
+ spatgraph(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=FALSE, preDists=NULL, preGraph=NULL, toroidal=FALSE)
 }
 
 \arguments{
@@ -27,6 +26,7 @@
 \item{dbg}{Boolean, print additional information of the execution.}
 \item{doDists}{Boolean, default FALSE. If true, precompute the distance diagonal matrix. Speeds up quite a lot but takes O(n\^2) memory!}
 \item{preDists}{Optional precalculated distance matrix for the points.}
+\item{preGraph}{Start with this graph to search for connections.}
 \item{toroidal}{Make a toroidal distance calculation. Not useful when visualizing but useful for edge correction in summary calculations.}
 }
 
@@ -41,7 +41,7 @@ The following 'type' values are accepted, note that some of them need also the '
  'knn'\tab par=integer>0. k-nearest neighbours graph, par = k.\cr
  'mass\_geometric'\tab Connect two points if ||x-y||<m(x).\cr
  'gabriel'\tab Gabriel graph. Additional parameter for allowing \code{par=k} instead of 0 points in the circle.\cr
- 'delauney'\tab Delauney triangulation. !Only 2D!\cr
+ 'delaunay'\tab Delaunay triangulation. !Only 2D!\cr
  'MST'\tab Minimal spanning tree.\cr
  'markcross'\tab Connect two points if ||x-y||<m(x)+m(y).\cr
  'SIG'\tab Spheres of Influence.\cr

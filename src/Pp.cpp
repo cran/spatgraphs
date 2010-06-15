@@ -1,3 +1,4 @@
+//spatgraphs
 #include "Pp.h"
 /********************************************************************************************/
 Pp::Pp()
@@ -10,51 +11,172 @@ Pp::~Pp()
 /********************************************************************************************/
 void Pp::Init(SEXP Argspp)
 {
-	int i,j,old;
-	double Area;
+	int i,j, *type, old;
+	double Area, *x, *y, *z, *mass;
+	Point *p;
+
+	tor = 0;
+	toroidal = &tor;
+
 	m = length(getListElement(Argspp, "x"));
-	n = &m;
 	x = REAL(getListElement(Argspp, "x"));
 	y = REAL(getListElement(Argspp, "y"));
 	z = REAL(getListElement(Argspp, "z"));
 	type = INTEGER(getListElement(Argspp, "types"));
 	mass = REAL(getListElement(Argspp,"mass"));
-	std::vector<int> temp;
-	for(i=0;i<m;i++)
+
+//	set points
+	this->points.clear();
+	for(i=0; i < this->size(); i++)
+	{
+		p = new Point(x[i], y[i], z[i]);
+		p->setT(&type[i]);
+		p->setMass(&mass[i]);
+		points.push_back(*p);
+	}
+	m = points.size();
+
+//	type count
+	typevec.clear();
+	for(i=0;i < m ;i++)
 	{
 		old = 0;
-		for(j=0;j<(int)temp.size();j++)
-			if(temp.at(j)==type[i]){ old = 1;break;}
+		for(j=0;j<(int)typevec.size();j++)
+			if(typevec.at(j)==type[i]){ old = 1;break;}
 		if(!old)
-			temp.push_back(type[i]);
+			typevec.push_back(type[i]);
 	}
-	s = temp.size();
-	S = &s;
+	ntypes = typevec.size();
 
+// window
 	xlim = REAL(getListElement(getListElement(Argspp, "window") ,"x"));
 	ylim = REAL(getListElement(getListElement(Argspp, "window") ,"y"));
 	zlim = REAL(getListElement(getListElement(Argspp, "window") ,"z"));
+//	intensities
 	Area = (xlim[1]-xlim[0])*(ylim[1]-ylim[0])*(zlim[1]-zlim[0]);
-	for(i=0;i<s;i++)
+	lambda = 0;
+	for(i=0;i<ntypes; i++)
 	{
 		lambdas.push_back(0.0);
 		for(j=0;j<m;j++)
 			if(type[j]==i+1)
 				lambdas[i]=lambdas[i]+1.0;
 		lambdas[i]=lambdas[i]/Area;
+		lambda += lambdas[i];
 	}
+
+// distance
+	dist = &Pp::distEuclidian;
 }
 /********************************************************************************************/
-void Pp::Init(double *x0, double *y0, double *z0, int *type0, double *mass0, int *n0, double *xlim0, double *ylim0, double *zlim0)
+double Pp::distEuclidian(int *i, int *j)
+{
+	if(*i==*j) return 0.0;
+		if(*i>*j) return distEuclidian(j, i);
+		if(*toroidal)
+			return	sqrt(
+						pow( fminf( xlim[1]-xlim[0]-fabs(points.at(*i).getX()-points.at(*j).getX()) , fabs(points.at(*i).getX()-points.at(*j).getX()) ) ,2.0) +
+						pow( fminf( ylim[1]-ylim[0]-fabs(points.at(*i).getY()-points.at(*j).getY()) , fabs(points.at(*i).getY()-points.at(*j).getY()) ) ,2.0) +
+						pow( fminf( zlim[1]-zlim[0]-fabs(points.at(*i).getZ()-points.at(*j).getZ()) , fabs(points.at(*i).getZ()-points.at(*j).getZ()) ) ,2.0)   );
+		else
+			return 	sqrt(
+					pow( points.at(*i).getX()- points.at(*j).getX()  ,2.0) +
+					pow( points.at(*i).getY()- points.at(*j).getY()  ,2.0) +
+					pow( points.at(*i).getZ()- points.at(*j).getZ()  ,2.0)   );
+}
+/********************************************************************************************/
+double Pp::distPrecalculated(int *i, int *j)
+{
+	if(*i==*j) return 0.0;
+	if(*i>*j) return distPrecalculated(j, i);
+	return distTriangle.at( *j-*i -1 + (int)((*i)*m-(*i)*(*i+1)/2) );
+}
+/********************************************************************************************/
+void Pp::calcDists()
+{
+	int i,j;
+	for(i=0; i < m-1;i++)
+		for(j=i+1; j<m;j++)
+		{
+			distTriangle.push_back(distEuclidian(&i, &j));
+		}
+	dist = &Pp::distPrecalculated;
+}
+/********************************************************************************************/
+double Pp::getDist(int *i, int *j)
+{
+	return (this->*dist)(i,j);
+}
+/********************************************************************************************/
+void Pp::setDists(double *dvec)
+{
+	int i;
+	distTriangle.resize(m*(m-1)/2);
+	for(i=0; i < (int)distTriangle.size(); i++)
+			distTriangle.at(i) = dvec[i];
+
+	dist = &Pp::distPrecalculated;
+}
+/********************************************************************************************/
+double  Pp::getX(int *i) {return this->points[*i].getX();}
+double  Pp::getY(int *i) {return this->points[*i].getY();}
+double  Pp::getZ(int *i) {return this->points[*i].getZ();}
+int     Pp::getT(int *i) {return this->points[*i].getT();}
+int	    Pp::getTypevec(int *i){return this->typevec.at(*i);}
+void 	Pp::setToroidal(int *i){this->tor = *i;}
+double  Pp::getMass(int *i){return this->points[*i].getMass();}
+void    Pp::setMass(int *i, double *x){this->points[*i].setMass(x);}
+int 	Pp::size()      {return this->m;   }
+int     Pp::nsize(int *i){return this->points[*i].nsize();}
+int     Pp::getCluster(int *i){return this->points[*i].getCluster();}
+double  Pp::getMass2(int *i){return this->points[*i].getMass2();}
+void    Pp::setMass2(int *i, double *x){this->points[*i].setMass2(x);}
+int     Pp::getNtypes(){return this->ntypes;}
+/********************************************************************************************/
+
+int Pp::Empty(int *i, int *j, int *k)
+// check if the circumcircle of three point triangle is empty of other points.
+// See: http://mathworld.wolfram.com/Circumcircle.html
+{
+	int l;
+	double x0,y0,R2,bx,by,a,c,d2,xxyy1,xxyy2,xxyy3,x13,x23,x21,y13,y21,y23;
+	xxyy1 = points.at(*i).getX()*points.at(*i).getX()+points.at(*i).getY()*points.at(*i).getY();
+	xxyy2 = points.at(*j).getX()*points.at(*j).getX()+points.at(*j).getY()*points.at(*j).getY();
+	xxyy3 =	points.at(*k).getX()*points.at(*k).getX()+points.at(*k).getY()*points.at(*k).getY();
+	y23 = points.at(*j).getY()-points.at(*k).getY();
+	y13 = points.at(*i).getY()-points.at(*k).getY();
+	y21 = points.at(*j).getY()-points.at(*i).getY();
+	x23 = points.at(*j).getX()-points.at(*k).getX();
+	x13 = points.at(*i).getX()-points.at(*k).getX();
+	x21 = points.at(*j).getX()-points.at(*i).getX();
+	bx = -( xxyy1*y23-xxyy2*y13-xxyy3*y21 );
+	by =  ( xxyy1*x23-xxyy2*x13-xxyy3*x21 );
+	a  = points.at(*i).getX()*y23-points.at(*j).getX()*y13-points.at(*k).getX()*y21;
+	c  = -(xxyy1*(points.at(*j).getX()*points.at(*k).getY()-points.at(*j).getY()*points.at(*k).getX())-xxyy2*(points.at(*i).getX()*points.at(*k).getY()-points.at(*i).getY()*points.at(*k).getX())-xxyy3*(points.at(*j).getX()*points.at(*i).getY()-points.at(*i).getX()*points.at(*j).getY()));
+	R2 = (bx*bx+by*by-4.0*a*c)/(4.0*a*a);
+	x0 = -bx/(2.0*a);
+	y0 = -by/(2.0*a);
+	for(l=0;l<m;l++)
+	{
+		if( (l!=*i) & (l!=*j) & (l!=*k))
+		{
+			d2 = pow(x0-points.at(l).getX(),2)+pow(y0-points.at(l).getY(),2);
+			if(d2<R2) return 0;
+		}
+	}
+	return 1;
+}
+
+
+// old init
+/********************************************************************************************/
+void Pp::Init(double *x, double *y, double *z, int *type, double *mass, int *n, double *xlim0, double *ylim0, double *zlim0)
 {
 	int i,j,old;
-	n = n0; m = *n;
-	x = x0;
-	y = y0;
-	z = z0;
+	Point *p;
+	m = *n;
 	std::vector<int> temp;
-	type =type0;
-	mass =mass0;
+	this->points.clear();
 	for(i=0;i<m;i++)
 	{
 		old = 0;
@@ -62,9 +184,14 @@ void Pp::Init(double *x0, double *y0, double *z0, int *type0, double *mass0, int
 			if(temp.at(j)==type[i]){ old = 1;break;}
 		if(!old)
 			temp.push_back(type[i]);
+		p = new Point(x[i], y[i], z[i]);
+		p->setT(&type[i]);
+		p->setMass(&mass[i]);
+		points.push_back(*p);
+
 	}
-	s = temp.size();
-	S = &s;
+	m = points.size();
+	ntypes = temp.size();
 
 	xlim = xlim0;
 	ylim = ylim0;

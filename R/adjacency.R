@@ -1,12 +1,25 @@
 # adjacency.R
-# First version used to do things with matrices instead of lists,
-# so stuff here exists only for backwise compatibility.
+# First version used to do things with matrices instead of lists.
 # 
 # Convert from edge list to adjacency matrix and vice versa
 #
 # Author: Tuomas Rajala <tarajala@maths.jyu.fi>
 ##############################################################################
 
+##############################################################################
+# transpose adjacency matrix
+t.sg<-function(x)
+{
+	z<-sg2adj(x)
+	z$matrix<-t(z$matrix)
+	adj2sg(z)
+}
+t.sgadj<-function(x)
+{
+	x$matrix<-t(x$matrix)
+	x
+}
+##############################################################################
 
 sg2adj<-function(x)
 {
@@ -44,19 +57,18 @@ sgadj<-function(edges=diag(0),type="?",pars=NULL,sym=TRUE)
 ##############################################################################
 print.sgadj<-function(x,...)
 {
-	type<-x$type
+	par_should_be<-unlist(SG_GRAPH_PARS[which(x$type==SG_SUPPORTED_GRAPHS)])
 	nam<-names(x$parameters)
-	p<-NULL
-	if(!is.null(nam)){
-		for(i in 1:length(nam))
-			p<-paste(p,nam[i],"=",x$parameters[[i]],sep=" ",collapse=",")
-		p<-paste("(",p,")") 
-	}
-	if(class(x)=="sgadj")kumpi<-"adjacency"
-	cat(paste("'Spatgraphs' ",kumpi," matrix:",
-					"\ngraph type '",type,"' ",p,", for ",x$N," points\n",sep=""))
+	p<-"?"
+#   if(length(par_should_be)<2){if(par_should_be=="") p<-""}
+	p<-paste(", par=(",paste(x$parameters,collapse=","),")",sep="")
+	cat(paste("'Spatgraphs' adjacency matrix:",
+					"\ngraph type '",x$type,"'",p,", for ",x$N," points.\n",sep=""))
+	if(!is.null(x$note))cat(paste("Note: ", x$note,".\n",sep=""))
 	
 }
+
+
 ##############################################################################
 plot.sgadj<-function(x,...)
 {

@@ -18,21 +18,18 @@ public:
 	double opar;
 	double *oldpar;
 	int	   *doDists;
-	int    *toroidal;
 	int    *dbg;
 	double *prepR;
 	int    *gtype;
+	double  mdeg;
+	int 	preEdges;
 	std::vector<std::vector<int> > nodelist;
-	std::vector<double> distTriangle;
-	std::vector<double> * pdists;
-	double (Graph::*Dist)(int*, int*);
-	double Dist1(int*, int*);
-	double Dist2(int*, int*);
 	Graph();
 	virtual ~Graph();
 
 	void Init(Pp *pp0, int *gtype0, double *par, double *prepR, int *doDists, double *preDists, int *toroidal, int *dbg );
 	void setNodelist(std::vector<std::vector<int> > *nodelist_new);
+	void setNodelist(SEXP);
 	void addNew(int , int);
 	void sg_calc();
 
@@ -43,7 +40,7 @@ public:
 	void sg_knn();
 	void sg_shrink_knn();
 	void sg_gabriel();
-	void sg_delauney();
+	void sg_delaunay();
 	void sg_MST();
 	void sg_markcross();
 	void sg_SIG();
@@ -60,6 +57,7 @@ public:
 	SEXP toSEXP();
 };
 
+int compare_doubles(const void *a, const void *b);
 double Attenuate(double r, double alpha); // used by STIR graph
 
 #endif /*GRAPH_H_*/

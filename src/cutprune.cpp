@@ -7,7 +7,6 @@
 
 #include <R.h>
 #include "Graph.h"
-#include "dists.h"
 #include "Pp.h"
 
 

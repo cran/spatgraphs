@@ -10,9 +10,9 @@ summary.sg<-function(object, ...)
    args<-list(...)
    print(object)
    degs<-sapply(object$edges, length)
-   cat("\nEdge count:",sum(degs),"\n");
+   cat("Edge count:",sum(degs),"\n");
    cat("Isolated points:",sum(degs==0),"\n")
-   cat("Symmetric:",object$symmetric,"\n")
+#   cat("Symmetric:",object$symmetric,"\n")
    cat("Degree stats:\n")
    print(summary(degs))
    if("pp"%in%names(args))

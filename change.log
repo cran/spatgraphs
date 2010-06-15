@@ -1,3 +1,29 @@
+v2.37:
+ - better plotting, no duplicate points when add=FALSE
+ - better plotting of clusters
+ - added prune method
+ - added possibility to give a precalculated sg-object to narrow search space
+ - igraph pp$n-dependece fix
+ 
+v2.36:
+ - fix 3d pattern check: length(z) was checked wrong
+ - removed spin3d(): rgl now has it's own 
+ 
+v2.35:
+ - new Pp structure: added distances handler and other features from biolisa's Pp-class
+ 
+v2.34:
+ - prettier colors for plotting
+v2.33:
+ - fix "toroidal" check for non-ppp object
+ - added adjacency matrix transposing with t()-method directly to sg-objects
+  
+ 
+v2.32:
+ - 'n' and 'window' are no longer required from the pattern
+ - 'delauney' is now 'delaunay'
+ - better argument handling
+ 
 v2.31:
  - fix some more sun compiler errors: added fmin-function to dists.cpp, for some reason is not defined in non-GNU math.h 
 

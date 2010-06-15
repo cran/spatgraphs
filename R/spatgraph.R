@@ -9,7 +9,7 @@
 ########################################################################################
 
 SG_SUPPORTED_GRAPHS<-c("geometric","knn","mass_geometric",
-					   "gabriel","delauney","MST","markcross",
+					   "gabriel","delaunay","MST","markcross",
 					   "SIG","RST","RNG","CCC","STIR")
 SG_GRAPH_PARS<-list(R="numeric>0",k="integer>0","",
 					  k="integer>=0","","","",
@@ -18,42 +18,59 @@ SG_GRAPH_PARS<-list(R="numeric>0",k="integer>0","",
 			       )
 ########
 
-spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=FALSE, preDists=NULL, toroidal=FALSE)
+spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=FALSE, preDists=NULL, preGraph=NULL, toroidal=FALSE)
 {
-    #check conditions etc
-	if(is.null(par))par<-sg_default_par(pp,type)
+	note<-NULL
+    if(type=="delauney")type<-"delaunay" # was misspelled
+	#check the pattern and parameters
 	error<-sg_verify_parameters(pp,type,par,preprocessR)
 	if(length(error)>1) return(stop(error))
-	
+	if(is.null(par))par<-sg_default_par(pp,type)
+	pp<-sg_modify_pp(pp)
+	if(toroidal)if(pp[["window"]][["type"]]!="rectangle") stop(simpleError("Toroidal version available only for a rectangular window."))
 	npoints<-length(pp[["x"]])
 	# if the distance matrix is given, make it upper triangle
 	if(!is.null(preDists))
 	{
 		if(!is.matrix(preDists) | !any(diag(preDists)==0) | !any(dim(preDists)==c(npoints,npoints)) )
-			stop("sg: given preDists not a distance matrix (diag=0, nxn) ")
+			stop("sg: given preDists not a symmetric nxn-matrix with diag=0.")
 		preDists<- t(preDists)[!upper.tri(preDists,diag=TRUE)]
 	}
 	else preDists<--1
 	
+	# if a precalculation of geometric graph is required
+	if(preprocessR>0)
+	{
+		note<-paste("Precalculated geometric graph with R=",preprocessR,sep="")
+	}
+	# if a precalculation graph is given
+	if(!is.null(preGraph))
+	{
+		verifyclass(preGraph, "sg")
+		note<-paste("Precalculated graph given (", preGraph$type, ", par=",paste(preGraph$parameters, collapse=","),")",sep="")
+	}
+	
 	#all ok!
     if(dbg) cat("Parameter verification ok\n")
 	#Some special modifications to the ppp-class object 
-    pp<-sg_modify_pp(pp)
+    
+	
 	if(type=="RST")#TODO: put this RST check inside c for modularity
 	{
 		pp[["x"]]<-c(pp[["x"]],as.numeric(par[1]))
 		pp[["y"]]<-c(pp[["y"]],as.numeric(par[2]))
 		pp[["z"]]<-c(pp[["z"]],as.numeric(par[3]))
 	}
-	typei<-which(SG_SUPPORTED_GRAPHS==type)-1
+	typei<-pmatch(type, SG_SUPPORTED_GRAPHS)-1
 	
     #and off we go
 	edges<-vector("list",npoints)
 	edges<-.External("spatgraph_c", pp, as.integer(typei), as.numeric(par), 
-			preprocessR, as.integer(toroidal), as.integer(doDists), as.numeric(preDists), as.integer(dbg), 
+			preprocessR, as.integer(toroidal), as.integer(doDists), as.numeric(preDists), preGraph, 
+			as.integer(dbg),
 			PACKAGE="spatgraphs")
  
-    sg(edges,type=type,pars=par)
+    sg(edges, type=type, pars=par, note=note)
 }
 
 #
@@ -61,10 +78,10 @@ spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=
 # default parameter if NULL is given
 sg_default_par<-function(pp, type)
 {
-	lambda<-pp$n/((pp$window$x[2]-pp$window$x[1])*(pp$window$y[2]-pp$window$y[1]))
+	lambda<-length(pp$x)/((pp$window$x[2]-pp$window$x[1])*(pp$window$y[2]-pp$window$y[1]))
 	defaults<-list(R=1/sqrt(lambda), k=4, none=0, k=0, none=0, none=0, none=0, none=0, 
 			c0=c(x0=0,y0=0,z0=0), none=0, type0=factor(1), pars=c(noise=0,alpha=0,beta=0,gamma=0))
-	i<-which(SG_SUPPORTED_GRAPHS==type)
+	i<-pmatch(type, SG_SUPPORTED_GRAPHS)
 	defaults[[i]]
 }
 ########################################################################################
@@ -72,20 +89,15 @@ sg_default_par<-function(pp, type)
 #
 sg_verify_parameters<-function(pp,type,par,prepR)
 {
-	#SUPPORTED_GRAPHS<-c("geometric","mark_geometric","knn","kmnn","markcross","SIG","RST","MST","CCC","gabriel","delauney","STIR","convexnn","RNG")
-	
-	
-	
-	if(is.null(pp[["window"]]) || is.null(pp[["x"]]) || is.null(pp[["y"]])) return(simpleError("sg_verify_pars: check the pp requirements: need components x, y and window."))
+	if(is.null(pp[["x"]]) || is.null(pp[["y"]])) return(simpleError("sg_verify_pars: check the pp requirements: need at least components x and y."))
+	if(length(pp[["x"]])!=length(pp[["y"]])) return(simpleError("sg_verify_pars: Coordinate vectors x and y are of different length.")) 
+	if(!is.null(pp[["z"]]))
+		if(length(pp[["z"]])!=length(pp[["x"]]))return(simpleError("sg_verify_pars: z coordinate vector is of different length than x and y."))
 	if(is.null(par))par<-sg_default_par(pp,type)
-	if(length(pp[["x"]])<2 || length(pp[["x"]])!=length(pp[["y"]])) return(simpleError("sg_verify_pars: not a proper point pattern."))
-	if(!(type%in% SG_SUPPORTED_GRAPHS)) 
-		return(simpleError(paste("sg_verify_pars: sg_type:'",type,"' is not valid graph type. Pick one from:",paste(SG_SUPPORTED_GRAPHS,collapse=" "),".") ))
-	if(!is(prepR,"numeric")|| length(prepR)!=1 || prepR<0)
-		return(simpleError(paste("sg_verify_pars: sg_preprocessR needs to be a positive number.")) )
 	
-	
-	par_should_be<-unlist(SG_GRAPH_PARS[which(type==SG_SUPPORTED_GRAPHS)])
+	if(is.na(i<-pmatch(type, SG_SUPPORTED_GRAPHS))) 
+		return(simpleError(paste("sg_verify_pars: '",type,"' is not valid graph type. Pick one from:",paste(SG_SUPPORTED_GRAPHS,collapse=" "),".") ))
+	par_should_be<-unlist(SG_GRAPH_PARS[i])
 	if(length(par_should_be)==1)if(par_should_be=="") 	return("")	
 	if(length(par)!=length(par_should_be))
 		return(simpleError(
@@ -94,12 +106,20 @@ sg_verify_parameters<-function(pp,type,par,prepR)
 					 paste(" (",paste(names(par_should_be),collapse=","),")",sep=""),
 				".",sep="")
 			    ))
+	
+	if(!is(prepR,"numeric")|| length(prepR)!=1 || prepR<0)
+		return(simpleError(paste("sg_verify_pars: preprocessR needs to be a positive number.")) )
+	
 	return("")
 }
 ########################################################################################
 sg_modify_pp<-function(pp)
 {
 	n<-length(pp[["x"]])
+	pp[["n"]]<-n
+	
+	if(is.null(pp[["window"]])) pp[["window"]]<-list(xrange=range(pp[["x"]]), yrange=range(pp[["y"]]), type="rectangle")
+	
 	if(length(pp[["mass"]]) < n ) # set the masses
 	{
 		if(length(pp[["marks"]])< n | !is.numeric(pp[["marks"]])) pp$mass<-rep(1.0,n)
