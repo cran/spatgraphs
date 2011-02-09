@@ -5,6 +5,7 @@
 # Author: Tuomas Rajala <tarajala@maths.jyu.fi>
 ###############################################################################
 
+#sg.as.dxf<-function(x, ...) sg2dxf(x, ...)
 
 sg2dxf<-function(x, pp, file)
 {

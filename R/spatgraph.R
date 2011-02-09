@@ -10,15 +10,17 @@
 
 SG_SUPPORTED_GRAPHS<-c("geometric","knn","mass_geometric",
 					   "gabriel","delaunay","MST","markcross",
-					   "SIG","RST","RNG","CCC","STIR")
+					   "SIG","RST","RNG","CCC","STIR","bgeometric")
 SG_GRAPH_PARS<-list(R="numeric>0",k="integer>0","",
 					  k="integer>=0","","","",
 					  "",list(x0="numeric",y0="numeric",z0="numeric=0"),"",type0="factor",
-					   list(noise="numeric>0",alpha="numeric",beta="numeric>0",gamma="numeric>=0") #STIR
-			       )
+					   list(noise="numeric>0",alpha="numeric",beta="numeric>0",gamma="numeric>=0"), #STIR
+			           R="numeric>0")
 ########
 
-spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=FALSE, preDists=NULL, preGraph=NULL, toroidal=FALSE)
+spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, 
+		            doDists=FALSE, preDists=NULL, preGraph=NULL, toroidal=FALSE,
+					include=NULL)
 {
 	note<-NULL
     if(type=="delauney")type<-"delaunay" # was misspelled
@@ -49,7 +51,11 @@ spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=
 		verifyclass(preGraph, "sg")
 		note<-paste("Precalculated graph given (", preGraph$type, ", par=",paste(preGraph$parameters, collapse=","),")",sep="")
 	}
-	
+	# the inclusion vector: which nodes to compute for. Only used for big geometric
+	if(!is.null(include)){
+		if(length(include)!=length(pp$x)) stop("Include vector's length must match the size of pattern.")
+	}
+	else include<-rep(TRUE, length(pp$x))
 	#all ok!
     if(dbg) cat("Parameter verification ok\n")
 	#Some special modifications to the ppp-class object 
@@ -63,11 +69,14 @@ spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=
 	}
 	typei<-pmatch(type, SG_SUPPORTED_GRAPHS)-1
 	
+	# this is for compatibily with 'spatialsegregation'
+	weightMatrix<--1.1 # no type-to-type weights given
+	
     #and off we go
 	edges<-vector("list",npoints)
 	edges<-.External("spatgraph_c", pp, as.integer(typei), as.numeric(par), 
 			preprocessR, as.integer(toroidal), as.integer(doDists), as.numeric(preDists), preGraph, 
-			as.integer(dbg),
+			as.integer(include), weightMatrix, as.integer(dbg),
 			PACKAGE="spatgraphs")
  
     sg(edges, type=type, pars=par, note=note)
@@ -80,7 +89,8 @@ sg_default_par<-function(pp, type)
 {
 	lambda<-length(pp$x)/((pp$window$x[2]-pp$window$x[1])*(pp$window$y[2]-pp$window$y[1]))
 	defaults<-list(R=1/sqrt(lambda), k=4, none=0, k=0, none=0, none=0, none=0, none=0, 
-			c0=c(x0=0,y0=0,z0=0), none=0, type0=factor(1), pars=c(noise=0,alpha=0,beta=0,gamma=0))
+			c0=c(x0=0,y0=0,z0=0), none=0, type0=factor(1), pars=c(noise=0,alpha=0,beta=0,gamma=0),
+			R=1/sqrt(lambda))
 	i<-pmatch(type, SG_SUPPORTED_GRAPHS)
 	defaults[[i]]
 }
@@ -135,6 +145,11 @@ sg_modify_pp<-function(pp)
 	
 	if(is.null(pp[["z"]]) || length(pp[["z"]])!=length(pp[["x"]])) pp$z<-rep(0.0,n) # if 2D only
 	if(is.null(pp[["window"]][["z"]])) pp$window$z<-as.numeric(c(0.0,1.0)) # if 2D only
+	
+	# area, only rectangle area correct
+	if(is.null(pp[["area"]])) 
+		pp[["area"]]<-diff(pp$window$x)*diff(pp$window$y)*diff(pp$window$z)
+	
 	pp$marks<-NULL
 	pp$window$x<-as.numeric(pp$window$x)
 	pp$window$y<-as.numeric(pp$window$y)

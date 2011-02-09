@@ -14,6 +14,7 @@ cut.sg<-function(x, ..., pp, R=NULL,doDists=FALSE, toroidal=FALSE, dbg=FALSE)
 	edges<-.External("sg_cutprune_c", pp, x, 
 			as.numeric(R), as.integer(doDists), 
 			as.integer(toroidal), as.integer(dbg),
+			as.integer(rep(1, x$N)),
 			as.integer(1), PACKAGE="spatgraphs")
 	sg(edges,type=x$type,pars=x$parameters,note=paste("cut with R=",R,sep=""))
 }
@@ -31,9 +32,11 @@ prune.sg<-function(x, ..., pp, level=1, doDists=FALSE, toroidal=FALSE, dbg=FALSE
 	verifyclass(x,"sg")
 	pp<-sg_modify_pp(pp)
 	x<-sg2sym(x)
+	
 	edges<-.External("sg_cutprune_c", pp, x, 
 			as.numeric(level), as.integer(doDists), 
-			as.integer(toroidal), as.integer(dbg), 
+			as.integer(toroidal), as.integer(dbg),
+			as.integer(rep(1, x$N)),
 			as.integer(0), PACKAGE="spatgraphs")
 	sg(edges,type=x$type,pars=x$parameters,note=paste("pruned with level=",as.integer(level),sep=""))
 }

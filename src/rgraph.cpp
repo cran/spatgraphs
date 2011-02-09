@@ -10,8 +10,8 @@ SEXP spatgraph_c(SEXP Args)
 //.External("spatgraph_c", pp, as.integer(typei), as.numeric(par), preprocessR, as.integer(toroidal), as.integer(doDists), as.integer(dbg))
 
 	Pp pp;
-	double *prepR, *par, *preDists;
-	int *gtype, *doDists, *toroidal, *dbg;
+	double *prepR, *par, *preDists, *weightMatrix;
+	int *gtype, *doDists, *toroidal, *dbg, *incl;
 	Graph graph;
 	SEXP preGraph;
 
@@ -40,12 +40,18 @@ SEXP spatgraph_c(SEXP Args)
  	Args = CDR(Args);
  	preGraph = CAR(Args); //possibly precalculated edges
 
+ 	Args = CDR(Args);
+	incl = INTEGER(CAR(Args)); // the point inclusion vector
+
+	Args = CDR(Args);
+	weightMatrix = REAL(CAR(Args)); // weightMatrix
+
 	Args = CDR(Args);
 	dbg = INTEGER(CAR(Args)); // if debug messages
 
 
 
-	graph.Init(&pp, gtype, par, prepR, doDists, preDists, toroidal, dbg);
+	graph.Init(&pp, gtype, par, prepR, doDists, preDists, toroidal, incl, weightMatrix, dbg);
 
 	if(!isNull(preGraph))
 	{

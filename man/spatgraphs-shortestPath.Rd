@@ -15,7 +15,7 @@
   \item{j}{The target node of the path to find.}
   \item{g}{Graph which defines the edges.}
   \item{pp}{Point pattern. If given, the edges are of Euclidian length, otherwise each edge is of length 1.}
-  \item{dbg}{Print additional messages.}
+  \item{dbg}{Print runtime messages.}
   }
 
 \details{

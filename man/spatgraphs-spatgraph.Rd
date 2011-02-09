@@ -15,7 +15,8 @@
   }
 }
 \usage{
- spatgraph(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, doDists=FALSE, preDists=NULL, preGraph=NULL, toroidal=FALSE)
+ spatgraph(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, 
+           doDists=FALSE, preDists=NULL, preGraph=NULL, toroidal=FALSE, include=NULL)
 }
 
 \arguments{
@@ -26,8 +27,9 @@
 \item{dbg}{Boolean, print additional information of the execution.}
 \item{doDists}{Boolean, default FALSE. If true, precompute the distance diagonal matrix. Speeds up quite a lot but takes O(n\^2) memory!}
 \item{preDists}{Optional precalculated distance matrix for the points.}
-\item{preGraph}{Start with this graph to search for connections.}
+\item{preGraph}{Precalculated graph to be used as search space for neighbours. Useful for large computation of e.g. Delaunay.}
 \item{toroidal}{Make a toroidal distance calculation. Not useful when visualizing but useful for edge correction in summary calculations.}
+\item{include}{A 0-1-vector describing which points' neighbourhoods to calculate, i.e. include[i]=1(compute neighbourhood of pp[i]) }
 }
 
 \details{

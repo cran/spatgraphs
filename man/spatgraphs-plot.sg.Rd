@@ -13,8 +13,8 @@
   }
 }
 \usage{
-\method{plot}{sg}(x, pp, add=TRUE, which=NULL, directed=0, 
-		          add.points=FALSE, points.col="blue", points.pch=19, points.cex=1, lines.col="gray70",...)
+   \method{plot}{sg}(x, pp, add=TRUE, which=NULL, directed=0, add.points=FALSE, 
+           points.col="blue", points.pch=19, points.cex=1, lines.col="gray70", ...)
 }
 \arguments{
 \item{x}{spatgraph/spatcluster object}

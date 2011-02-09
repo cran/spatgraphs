@@ -11,11 +11,11 @@
 
 
 extern "C" {
-//	edges<-.External("sg_cutprune_c", pp,x,as.numeric(R), as.integer(doDists), as.integer(toroidal), as.integer(dbg),as.integer(1))
+//	edges<-.External("sg_cutprune_c", pp, x, as.numeric(R), as.integer(doDists), as.integer(toroidal), as.integer(dbg),as.integer(1))
 SEXP sg_cutprune_c(SEXP Args)
 {
 	Pp pp;
-	int *doDists, *dbg, *toroidal, *cut, i0=0;
+	int *doDists, *dbg, *toroidal, *cut, i0=0, *incl;
 	Graph graph;
 	SEXP prepGraph;
 	double *par, d0=0.0, *preDists, d1=-1.0;
@@ -41,19 +41,16 @@ SEXP sg_cutprune_c(SEXP Args)
 	dbg = INTEGER(CAR(Args));
 
 	Args = CDR(Args);
+	incl = INTEGER(CAR(Args));
+
+	Args = CDR(Args);
 	cut = INTEGER(CAR(Args));
 
 
 
-	graph.Init(&pp, &i0, par, &d0, doDists, preDists, toroidal, dbg);
+	graph.Init(&pp, &i0, par, &d0, doDists, preDists, toroidal, incl, &d1, dbg);
+	graph.setNodelist(prepGraph);
 
-	if(*dbg)printf("Setting precalculated edges...");
-
-	std::vector<std::vector<int> > prepNodelist;
-	VectsxpToVector(getListElement(prepGraph,"edges"), prepNodelist);
-	graph.setNodelist(&prepNodelist);
-
-	if(*dbg)printf(" ok.\n");
 	if(*cut)
 		graph.sg_cut(par);
 	else

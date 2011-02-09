@@ -1,3 +1,22 @@
+v2.43:
+ - fix clash of c-side fmin-function with mathcalls.h-library of ubuntu
+ - updated docs
+ - ready for CRAN
+v2.42:
+ - fix memory leak from new's never being deleted in a loop of Pp.init .
+ 
+v2.41:
+ - fix REAL-error, happened when spatstat loaded
+ 
+v2.40:
+ - Delaunay makes use of inclusion vector
+ - Delaunay now checks emptyness only from given precalculated neighbours 
+ 
+v2.39:
+ - big geometric: included nodes only
+v2.38:
+ - add a clip-method to sg-class: Clips edges crossing window border. Requires spatstat.
+ 
 v2.37:
  - better plotting, no duplicate points when add=FALSE
  - better plotting of clusters
