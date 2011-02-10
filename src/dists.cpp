@@ -36,9 +36,9 @@ double getDist(Pp *pp, int *i, int *j, int *toroidal)
 	if(*i>*j) return getDist(pp, j, i, toroidal);
 	if(*toroidal)
 		return	sqrt(
-					pow( fminf( pp->xlim[1]-pp->xlim[0]-fabs(pp->getX(i)-pp->getX(j)) , fabs(pp->getX(i)-pp->getX(j)) ) ,2.0) +
-					pow( fminf( pp->ylim[1]-pp->ylim[0]-fabs(pp->getY(i)-pp->getY(j)) , fabs(pp->getY(i)-pp->getY(j)) ) ,2.0) +
-					pow( fminf( pp->zlim[1]-pp->zlim[0]-fabs(pp->getZ(i)-pp->getZ(j)) , fabs(pp->getZ(i)-pp->getZ(j)) ) ,2.0)   );
+					pow( fminf( pp->xlim[1]-pp->xlim[0]-fabs(pp->getX(i)-pp->getX(j)) , fabs(pp->getX(i)-pp->getX(j)) ) ,2.0F) +
+					pow( fminf( pp->ylim[1]-pp->ylim[0]-fabs(pp->getY(i)-pp->getY(j)) , fabs(pp->getY(i)-pp->getY(j)) ) ,2.0F) +
+					pow( fminf( pp->zlim[1]-pp->zlim[0]-fabs(pp->getZ(i)-pp->getZ(j)) , fabs(pp->getZ(i)-pp->getZ(j)) ) ,2.0F)   );
 	else
 		return 	sqrt(
 				pow( pp->getX(i)- pp->getX(j)  ,2.0) +

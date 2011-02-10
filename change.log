@@ -1,3 +1,6 @@
+v2.44:
+ - fix oveloading ambiguity in pow-calls, mixed float and double 
+ 
 v2.43:
  - fix clash of c-side fmin-function with mathcalls.h-library of ubuntu
  - updated docs
