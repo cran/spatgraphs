@@ -19,7 +19,7 @@ shortestPath<-function(i, j, g, pp=NULL, dbg=FALSE)
 		if(i%in%e$clusters[[k]]) break;
 	}
 	
-	if(!(j%in%e$clusters[[k]])) return(Inf);
+	if(!(j%in%e$clusters[[k]])) return(list(d=Inf, path=NA));
 	
 	if(is.null(pp)) d<-matrix(1,g$N,g$N)-diag(g$N)
 	else d<-as.matrix(dist(cbind(pp$x,pp$y),upper=TRUE))

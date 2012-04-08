@@ -54,13 +54,14 @@ spatcluster           Compute clusters (connected components)
 shortestPath          Find the shortest edgepath between two points
 edgeLengths           Lenghts of edges in a graph
 sg2sym                Make the edges symmetric
-sg2adj                Convert to adjacency matrix form
-adj2sg                Convert to edge list from sgadj
+sg2adj                Convert between legacy adjacency matrix form
 cut                   Cut edges longer than given R>0
 prune                 Prunes the graph, aimed for MST
 sg2dxf                Write graph to a dxf file
-sg2igraph             Change the sg-object to igraph-object of package igraph 
+sg2igraph             Change the sg-object to igraph-object of package igraph
+sg2sparse             Convert between sg-object and Matrix-package sparseMatrix 
 runif3d               Simple 3d uniform pp generation
+spectral.sg		      Spectral clustering
 }
 
 }
@@ -69,7 +70,7 @@ runif3d               Simple 3d uniform pp generation
 \preformatted{
 Tuomas Rajala
 University of Jyvaskyla, Finland
-tarajala@maths.jyu.fi
+tuomas.rajala@iki.fi
 }
 }
 \references{
@@ -106,8 +107,10 @@ The package 'rgl' is required for 3D-plotting.
    plot(e3,pp2d)
   }
   graph_example2d()
-  
-  #library(rgl)
+
+## Not run:
+## 3d example, requires library rgl
+  library(rgl)
   graph_example3d<-function(n=200)
   {
 	w<-c(0,1)
@@ -117,6 +120,8 @@ The package 'rgl' is required for 3D-plotting.
 	plot3d(pp3d,size=2, main="Radial spanning tree",col="black")
 	plot(e,pp3d,col="plum")
   }
-  #graph_example3d()
+  graph_example3d()
+## End(Not run)
+
 }
 \keyword{spatial}

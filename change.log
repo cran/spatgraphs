@@ -1,3 +1,18 @@
+v2.60:
+ - uses NAMESPACE
+ - add sparseMatrix-transformation
+
+v2.53:
+ - random graph still in progress
+v2.52:
+ - add random graph: P(connect i j) = f(d_ij, mi, mj)
+ 
+v2.51:
+ - shortestPath fixed: Inf returned now in list form
+ 
+v2.50:
+ - spectral clustering algorithm added
+  
 v2.44:
  - fix oveloading ambiguity in pow-calls, mixed float and double 
  

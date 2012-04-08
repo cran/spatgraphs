@@ -1,7 +1,7 @@
 \name{spatgraphs-other}
 \alias{sg2sym}
 \alias{edgeLengths}
-\alias{sg.edgelengths}
+\alias{edgelengths.sg}
 
 \title{Make the graph symmetric/compute edge lengths}
 
@@ -18,7 +18,7 @@
 }
 \usage{
    sg2sym(x, way=1)
-   edgeLengths(x, pp, ...)
+   edgelengths.sg(x, pp, ...)
 }
 \arguments{
 \item{x}{sg-object.}

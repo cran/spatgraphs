@@ -1,9 +1,9 @@
-shake<-function(pp, a=0.001)
-{
-	pp$x<-pp$x+runif(pp$n, -a,a)
-	pp$y<-pp$y+runif(pp$n, -a,a)
-	pp
-}
+#shake<-function(pp, a=0.001)
+#{
+#	pp$x<-pp$x+runif(pp$n, -a,a)
+#	pp$y<-pp$y+runif(pp$n, -a,a)
+#	pp
+#}
 
 #send out a mail, I use this to notify myself when long remote runs end.
 mailer<-function(header, body, address="",prefix="[computation] ")  

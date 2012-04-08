@@ -24,6 +24,7 @@ public:
 	double  mdeg;
 	int 	preEdges;
 	double *weightMatrix;
+	SEXP *other, *env;
 	std::vector<std::vector<int> > nodelist;
 	std::vector<int> typeIncluded;
 	double (Graph::*getTypeToTypeWeightp)(int*, int*);
@@ -31,7 +32,7 @@ public:
 	Graph();
 	virtual ~Graph();
 
-	void Init(Pp *pp0, int *gtype0, double *par, double *prepR, int *doDists, double *preDists, int *toroidal, int *inc, double *, int *dbg );
+	void Init(Pp *pp0, int *gtype0, double *par, double *prepR, int *doDists, double *preDists, int *toroidal, int *inc, double *, int *dbg, SEXP *, SEXP *);
 	void setNodelist(std::vector<std::vector<int> > *nodelist_new);
 	void setNodelist(SEXP);
 	void addNew(int , int);
@@ -56,6 +57,7 @@ public:
 	void sg_RNG();
 	void sg_CCC();
 	void sg_STIR();
+	void sg_random();
 
 	void sg_cut(double *R);
 	void sg_prune(double *lev);

@@ -17,7 +17,7 @@ SEXP sg_cutprune_c(SEXP Args)
 	Pp pp;
 	int *doDists, *dbg, *toroidal, *cut, i0=0, *incl;
 	Graph graph;
-	SEXP prepGraph;
+	SEXP prepGraph, other, env;
 	double *par, d0=0.0, *preDists, d1=-1.0;
 
 	preDists = &d1;
@@ -48,7 +48,7 @@ SEXP sg_cutprune_c(SEXP Args)
 
 
 
-	graph.Init(&pp, &i0, par, &d0, doDists, preDists, toroidal, incl, &d1, dbg);
+	graph.Init(&pp, &i0, par, &d0, doDists, preDists, toroidal, incl, &d1, dbg, &other, &env);
 	graph.setNodelist(prepGraph);
 
 	if(*cut)
@@ -56,7 +56,7 @@ SEXP sg_cutprune_c(SEXP Args)
 	else
 		graph.sg_prune(par);
 
-	if(*dbg)printf("\n");
+	if(*dbg)Rprintf("\n");
 	return graph.toSEXP();
 }
 

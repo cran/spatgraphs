@@ -14,6 +14,8 @@ SEXP spatgraph_c(SEXP Args)
 	int *gtype, *doDists, *toroidal, *dbg, *incl;
 	Graph graph;
 	SEXP preGraph;
+	SEXP env;
+	SEXP other; // misc. i.e. probability function for random graph
 
 //start parsing the args
 	Args = CDR(Args);
@@ -49,9 +51,14 @@ SEXP spatgraph_c(SEXP Args)
 	Args = CDR(Args);
 	dbg = INTEGER(CAR(Args)); // if debug messages
 
+	Args = CDR(Args);
+	other = CAR(Args); // misc
+
+	Args = CDR(Args);
+	env = CAR(Args); // env for function call
 
 
-	graph.Init(&pp, gtype, par, prepR, doDists, preDists, toroidal, incl, weightMatrix, dbg);
+	graph.Init(&pp, gtype, par, prepR, doDists, preDists, toroidal, incl, weightMatrix, dbg, &other, &env);
 
 	if(!isNull(preGraph))
 	{
@@ -60,7 +67,7 @@ SEXP spatgraph_c(SEXP Args)
 
 	graph.sg_calc();
 
-	if(*dbg)printf("\n");
+	if(*dbg)Rprintf("\n");
 	return graph.toSEXP();
 }
 

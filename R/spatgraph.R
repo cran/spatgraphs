@@ -10,12 +10,12 @@
 
 SG_SUPPORTED_GRAPHS<-c("geometric","knn","mass_geometric",
 					   "gabriel","delaunay","MST","markcross",
-					   "SIG","RST","RNG","CCC","STIR","bgeometric")
+					   "SIG","RST","RNG","CCC","STIR","bgeometric", "random")
 SG_GRAPH_PARS<-list(R="numeric>0",k="integer>0","",
 					  k="integer>=0","","","",
 					  "",list(x0="numeric",y0="numeric",z0="numeric=0"),"",type0="factor",
 					   list(noise="numeric>0",alpha="numeric",beta="numeric>0",gamma="numeric>=0"), #STIR
-			           R="numeric>0")
+			           R="numeric>0", f="function")
 ########
 
 spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE, 
@@ -25,7 +25,7 @@ spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE,
 	note<-NULL
     if(type=="delauney")type<-"delaunay" # was misspelled
 	#check the pattern and parameters
-	error<-sg_verify_parameters(pp,type,par,preprocessR)
+	error<-sg_verify_parameters(pp, type, par, preprocessR)
 	if(length(error)>1) return(stop(error))
 	if(is.null(par))par<-sg_default_par(pp,type)
 	pp<-sg_modify_pp(pp)
@@ -71,12 +71,13 @@ spatgraph<-function(pp, type="knn", par=NULL, preprocessR=0, dbg=FALSE,
 	
 	# this is for compatibily with 'spatialsegregation'
 	weightMatrix<--1.1 # no type-to-type weights given
-	
+	other<-NULL
+	if(typei==13){ other<-par ; par<-0}
     #and off we go
 	edges<-vector("list",npoints)
 	edges<-.External("spatgraph_c", pp, as.integer(typei), as.numeric(par), 
 			preprocessR, as.integer(toroidal), as.integer(doDists), as.numeric(preDists), preGraph, 
-			as.integer(include), weightMatrix, as.integer(dbg),
+			as.integer(include), weightMatrix, as.integer(dbg), body(other), environment(other),
 			PACKAGE="spatgraphs")
  
     sg(edges, type=type, pars=par, note=note)
@@ -90,7 +91,7 @@ sg_default_par<-function(pp, type)
 	lambda<-length(pp$x)/((pp$window$x[2]-pp$window$x[1])*(pp$window$y[2]-pp$window$y[1]))
 	defaults<-list(R=1/sqrt(lambda), k=4, none=0, k=0, none=0, none=0, none=0, none=0, 
 			c0=c(x0=0,y0=0,z0=0), none=0, type0=factor(1), pars=c(noise=0,alpha=0,beta=0,gamma=0),
-			R=1/sqrt(lambda))
+			R=1/sqrt(lambda), f=function(dij,mi,mj){return(0.5)} )
 	i<-pmatch(type, SG_SUPPORTED_GRAPHS)
 	defaults[[i]]
 }
@@ -116,7 +117,11 @@ sg_verify_parameters<-function(pp,type,par,prepR)
 					 paste(" (",paste(names(par_should_be),collapse=","),")",sep=""),
 				".",sep="")
 			    ))
-	
+	if(i==14) # if random graph: check that parameter is a suitable function
+	{
+		if(sum(names(formals(par))%in%c("dij","mi","mj"))<3)
+			return(simpleError("sg_verify_pars: Random graph par should be of the form 'function(dij, mi, mj)'."))
+	}
 	if(!is(prepR,"numeric")|| length(prepR)!=1 || prepR<0)
 		return(simpleError(paste("sg_verify_pars: preprocessR needs to be a positive number.")) )
 	

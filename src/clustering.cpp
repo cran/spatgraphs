@@ -23,9 +23,9 @@ SEXP sg_cluster(SEXP Args)
 	int n=nodelist.size();
 	int *koot = new int[n];
 	int i,j,k;
-	if(*dbg) printf("Clustering: ");
+	if(*dbg) Rprintf("Clustering: ");
 	for(i=0;i<n;i++) { koot[i]=0;};
-	if(*dbg) printf("grouping... ");
+	if(*dbg) Rprintf("grouping... ");
 
 	for(i=0;i<n;i++)
 	{
@@ -43,17 +43,17 @@ SEXP sg_cluster(SEXP Args)
 	int d=0,sizei;
 	int l,s;
 	int g,sizeg,h;
-	if(*dbg) printf("sorting... ");
+	if(*dbg) Rprintf("sorting... ");
 	while(loop)
 	{
 		sizei = clustlist.at(i).size();
 		if((sizei-d)>0)//any unvisited neigh's left
 		{
-//			printf("\n %i:%i,%i",i,sizei,d);
+//			Rprintf("\n %i:%i,%i",i,sizei,d);
 			for(k=d;k<sizei;k++)//look through unvisited neigh's in column i
 			{
 				g=clustlist.at(i).at(k);//A[k*n+i]; //number=index of the neighbour
-				//printf("\n  %i:%i,%i",i, k, g);
+				//Rprintf("\n  %i:%i,%i",i, k, g);
 				sizeg=clustlist.at(g).size();
 				for(j=sizeg-1; j >=0 ;j--)//starting union of col(i) U col(g) = col(i)
 				{
@@ -63,16 +63,16 @@ SEXP sg_cluster(SEXP Args)
 					{
 						for(l=0;l<(int)clustlist.at(i).size();l++)//is it new?
 						{
-							//                             printf(".");
+							//                             Rprintf(".");
 							if(clustlist.at(i).at(l) == h){ s=0; }
 						}
 						if(s>0) //if new add to col(i)
 						{
 							clustlist.at(i).push_back(h);
-							//printf("(%i)",h);
+							//Rprintf("(%i)",h);
 							//A[koot[i]*n+i]=h;
 							//koot[i]++;
-							//                             printf("from %i add %i->%i\n",g,h,i);
+							//                             Rprintf("from %i add %i->%i\n",g,h,i);
 						}
 					}
 					clustlist.at(g).pop_back();//A[j*n+g]=-1;
@@ -116,7 +116,7 @@ SEXP sg_cluster(SEXP Args)
 			reslist.push_back(*p);
 		}
 	}
-	if(*dbg) printf("done.\n");
+	if(*dbg) Rprintf("done.\n");
 	return vectorToSEXP(reslist);
 }
 

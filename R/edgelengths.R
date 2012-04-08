@@ -4,7 +4,7 @@
 #
 # Author: Tuomas Rajala <tuomas.a.rajala@jyu.fi>
 ###############################################################################
-sg.edgelengths<-
+edgelengths.sg<-
 edgeLengths<-function(x, pp, ...)
 {
 	if(missing(pp)) stop("Need 'pp' for distances.")
