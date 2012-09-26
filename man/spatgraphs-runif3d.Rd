@@ -14,9 +14,5 @@ runif3d(n = c(10), window = list(x = c(0, 1), y = c(0, 1), z = c(0, 1)))
 }
 \details{
  Simulates uniformly distributed points in 3d rectangle.
-  \tabular{ll}{
-    Date: \tab 2008-07-30\cr
-    License: \tab GPL v2 or later\cr
-  }
 }
 \keyword{spatial}

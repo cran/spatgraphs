@@ -8,22 +8,17 @@
 \description{
 \code{sg2sym} makes the graph symmetric.
 
-\code{edgeLengths} returns the distances of edge-connected points as a list x such that distance(x\$i,x\$j)=x\$d 
+\code{edgeLengths} returns the distances of edge-connected points as a list x=(i,j,d) such that distance(x$i[k],x$j[k])=x$d[k], k=1,...,NumbeOfEdges. 
 }
-\details{
-  \tabular{ll}{
-    Date: \tab 2009-09-14\cr
-    License: \tab GPL v2 or later\cr
-  }
-}
+
 \usage{
    sg2sym(x, way=1)
-   edgelengths.sg(x, pp, ...)
+   edgeLengths(x, pp, ...)
 }
 \arguments{
 \item{x}{sg-object.}
-\item{way}{If 1, use (xy OR yx) rule, if 2 or anything else use (xy AND yx) rule.}
 \item{pp}{Point pattern, for distances.}
+\item{way}{(in sg2sym). If 1, use (xy OR yx) rule, if anything else use (xy AND yx) rule.}
 \item{...}{ignored}
 }
 

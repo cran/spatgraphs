@@ -1,3 +1,5 @@
+v2.61:
+ - uploaded to bitbucket, using mercurial now
 v2.60:
  - uses NAMESPACE
  - add sparseMatrix-transformation

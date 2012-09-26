@@ -9,12 +9,12 @@ Graphs for spatial point patterns
 
 
 \description{
-Compute various graph edge sets for 2D and 3D spatial point patterns such as the ppp-objects in R-package 'spatstat'. Also capable of cluster/component computation and visualization.
+Compute various spatial graphs for 2D and 3D spatial point patterns such as the \code{ppp}-objects in R-package \code{spatstat}. Also capable of cluster/component computation and visualization.
 }
 
 \details{
 This package provides the following graph computations,
-all handled by the spatgraph()-function:
+all handled by the \code{\link{spatgraph}}-function:
 
 \preformatted{
 
@@ -22,9 +22,9 @@ all handled by the spatgraph()-function:
 -------------------------------------------------------------
  Geometric              ||x-y||<R                   
  Mass geometric         ||x-y||<m(x)                 
- Spheres of Influence   ||x-y||<d(x)+d(y)            
+ Spheres of Influence   ||x-y||<dn(x)+dn(y)            
  Mark crossing          ||x-y||<m(x)+m(y)            
- k-Nearest neighbour    x in knn(y)
+ k-Nearest neighbour    y in knn(x)
  Relative Neighbourhood see refs.                 
  Radial spanning tree   see refs.            
  Minimum spanning tree  see refs.            
@@ -34,9 +34,9 @@ all handled by the spatgraph()-function:
  Signal-to-noise-ratio  see refs.
 
 where 
-    ||.|| ~ euclidian distance
+    ||.|| ~ Euclidian distance
     m(x) ~ mass, size i.e. real mark of x
-    d(x) ~ the distance to the nearest neighbour of x.
+    dn(x) ~ the distance to the nearest neighbour of x.
     knn(x) ~ the k nearest neighbours set of x    
 }
 The minimum spanning tree is computed using Prim's algorithm.
@@ -46,22 +46,23 @@ requires package \code{rgl}.
 
 For adjacency matrices see functions sg2adj and adj2sg. 
 
-Also included are the following functions:
+In addition to the main workhorse \code{\link{spatgraph}}-function are the following functions:
 \preformatted{
 Function name          Description
 ----------------------------------------------------------
 spatcluster           Compute clusters (connected components)
-shortestPath          Find the shortest edgepath between two points
+shortestPath          Find the shortest edge-path between two points
 edgeLengths           Lenghts of edges in a graph
 sg2sym                Make the edges symmetric
-sg2adj                Convert between legacy adjacency matrix form
-cut                   Cut edges longer than given R>0
-prune                 Prunes the graph, aimed for MST
-sg2dxf                Write graph to a dxf file
-sg2igraph             Change the sg-object to igraph-object of package igraph
+sg2adj                Convert to an adjacency matrix form
+cut.sg                Cut edges longer than given R>0
+prune.sg              Prunes the graph, aimed for MST
+clip.sg               Clip edges crossing the borders of a window. Useful for non-convex regions.
+sg2dxf                Write a graph to a dxf file
+sg2igraph             Change the sg-object to igraph-object of package \code{\link{igraph}}
 sg2sparse             Convert between sg-object and Matrix-package sparseMatrix 
 runif3d               Simple 3d uniform pp generation
-spectral.sg		      Spectral clustering
+spectral.sg	          Spectral clustering
 }
 
 }
@@ -82,11 +83,11 @@ Marchette, D.: Random Graphs for Statistical Pattern Recognition, Wiley 2004.
 }
 
 \seealso{ 
-Spatial point processes in general, see the package 'spatstat'
+Spatial point processes in general, see the package \code{spatstat}.
 
-For more versatile Voronoi/Delaunay handling, see the package 'tripack'
+For more versatile Voronoi/Delaunay handling, see the package \code{tripack} or \code{deldir}.
 
-The package 'rgl' is required for 3D-plotting.
+The package \code{rgl} is required for 3D-plotting.
 }
 
 \examples{
@@ -108,7 +109,7 @@ The package 'rgl' is required for 3D-plotting.
   }
   graph_example2d()
 
-## Not run:
+\dontrun{
 ## 3d example, requires library rgl
   library(rgl)
   graph_example3d<-function(n=200)
@@ -121,7 +122,6 @@ The package 'rgl' is required for 3D-plotting.
 	plot(e,pp3d,col="plum")
   }
   graph_example3d()
-## End(Not run)
-
+}
 }
 \keyword{spatial}

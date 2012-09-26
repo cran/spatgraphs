@@ -1,8 +1,8 @@
 Package: spatgraphs
 Type: Package
 Title: Graphs for spatial point patterns
-Version: 2.60
-Date: 2012-04-08
+Version: 2.62
+Date: 2012-09-26
 Author: Tuomas Rajala
 Maintainer: Tuomas Rajala <tuomas.rajala@iki.fi>
 Depends:
@@ -12,6 +12,6 @@ Description: Graphs, graph visualization and graph component
         pattern analysis. See package 'spatstat' for more info about
         spatial point patterns.
 License: GPL (>= 2)
-Packaged: 2012-04-08 10:02:59 UTC; antiphon
+Packaged: 2012-09-26 08:42:49 UTC; tarajala
 Repository: CRAN
-Date/Publication: 2012-04-08 10:41:31
+Date/Publication: 2012-09-26 08:59:54
