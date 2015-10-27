@@ -1,83 +1,46 @@
-#include <Rdefines.h>
-#include <Rinternals.h>
-#include <R.h>
+#include <Rcpp.h>
 #include <vector>
-#include "Point.h"
-#include "Rextras.h"
+
+using namespace Rcpp;
+
 #ifndef PP_H_
 #define PP_H_
 
 class Pp
 {
-	std::vector<Point> points;
-	int m;
-	int ntypes;
-	int tor;
-	int *toroidal;
-	double windowArea;
+  int npoints;
+  int dim;
+  NumericMatrix X;
+  double (Pp::*dist)(int*, int*);
+  std::vector<double> distTriangle;
+  std::vector<double> * pdists;
 
-	double (Pp::*dist)(int*, int*);
-	double (Pp::*weight)(int*, int*);
-	double distEuclidian(int*, int*);
-	double distPrecalculated(int*, int*);
-	double weightAll1(int *, int *);
-	double weightTrans(int *, int *);
-	std::vector<double> distTriangle;
-	std::vector<double> weightTriangle;
-	std::vector<double> * pdists;
-	std::vector<int> typevec;
+  double distEuclidian(int*, int*);
+  double distGreatCircle(int*, int*);
+  double distPrecalculated(int*, int*);
+
+  double (Pp::*weight)(int*, int*);
+  double weightAll1(int *, int *);
+  std::vector<double> weightTriangle;
+
+  std::vector<int> typevec;
 
 public:
-	std::vector<double > lambdas;
-	double lambda;
-	double *xlim;
-	double *ylim;
-	double *zlim;
+  Pp(NumericMatrix );
+  virtual ~Pp();
 
-	Pp();
-	virtual ~Pp();
+  double getCoord(int *i, int *d);
+  int    size();
+  int    d();
+  double getDist(int *, int *);
+  void   setDist(int *, int *, double d);
+  void   calcDists();
+  void   setDists(double *);
 
-	void Init(double *x, double *y, double *z, int *type, double *mass0, int *n, double *xlim, double *ylim, double *zlim);
-	void Init(SEXP);
-
-	double getX(int *);
-	double getY(int *);
-	double getZ(int *);
-	int    getT(int *);
-
-	int	   getTypevec(int *);
-	void   setToroidal(int *);
-	int    size();
-	int    getNtypes();
-
-
-	double getDist(int *, int *);
-	void   setDist(int *, int *, double d);
-	void   calcDists();
-	void   setDists(double *);
-
-	double getWeight(int *, int *);
-	void   setWeight(int *, int *, double d);
-	void   calcTransWeights();
-	void   setAllTransWeights(double );
-
-	int    getCluster(int *);
-	int    nsize(int*); // neighbours
-	void   setMass(int *, double *);
-	double getMass(int *);
-	void   setMass2(int *, double *);
-	double getMass2(int *);
-
-	int Empty(int *, int *, int *); //voronoi
-	int EmptyConstrained(int *, int *, int *, std::vector <int>  *);
-
-	void addNeighbour(int *i, int *j);
-	void removeNeighbour(int *i, int *j);
-	void clearNeighbourhood(int *i);
-	int  getNeighbour(int *i, int *j);
-	void setCluster(int *i, int *j);
-	void movePoint(int *, double *, double *);
-	SEXP toSEXP();
+  double getWeight(int *, int *);
+  void   setWeight(int *, int *, double d);
+  void   calcTransWeights();
+  void   setAllTransWeights(double );
 };
 
 #endif /*PP_H_*/
