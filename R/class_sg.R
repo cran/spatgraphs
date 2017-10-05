@@ -13,7 +13,8 @@ as.sg <- function(edges=list(), type="?", pars=NULL, note=NULL) {
   e$N <- length(edges)
   e$symmetric<- "?"
   e$type <- type
-  e$parameters <- pars
+  np <- length(pars)
+  e$parameters <-  if(np>5) "vector" else pars
   if(!is.null(note)) e$note <- note
   class(e)<-"sg"
   e
@@ -58,7 +59,6 @@ print.sg<-function(x, ...)
 #' @param ... ignored
 #'
 #' @export
-
 summary.sg<-function(object, ...)
 {
   args<-list(...)

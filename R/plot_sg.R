@@ -37,21 +37,23 @@ plot.sg <- function(x, data, which=NULL, add=FALSE,
     nl <- sapply(e, length)
     ab <- cbind(rep(which, times=nl[which]), unlist(e))
 
+
     # unique edges
-    ok <- !duplicated(t(apply(ab, 1, sort)))
-    ab <- ab[ok,]
-    if(sum(ok) > max.edges)
-      stop(paste0("Trying to plot too many edges (", sum(ok),"), increase max.edges to override."))
+    ab <- unique(t(apply(ab, 1, sort)))
+
+    if(nrow(ab) > max.edges)
+      stop(paste0("Trying to plot too many edges (", nrow(ab),"),
+                  increase max.edges to override."))
 
     #
     by_i <- split(data.frame(ab), ab[,1])
-    sapply(by_i, function(ab) {
-      x0<-  data[ab[1,1],1]
-      y0<-  data[ab[1,1],2]
-      xo <- data[ab[,2],1]
-      yo <- data[ab[,2],2]
-      x1 <- as.vector( rbind(x0, xo ))
-      y1 <- as.vector( rbind(y0, yo ))
+    sapply(by_i, function(abc) {
+      x0<-  data[abc[1,1],1]
+      y0<-  data[abc[1,1],2]
+      xo <- data[abc[,2],1]
+      yo <- data[abc[,2],2]
+      x1 <- as.vector( rbind(x0, xo, NA ))
+      y1 <- as.vector( rbind(y0, yo, NA ))
       lines(x1, y1, ...)
     })
 
@@ -70,10 +72,14 @@ plot.sg <- function(x, data, which=NULL, add=FALSE,
 #' @param which points of which out-edges will be plotted
 #' @param ... passed to rgl.lines
 #'
-#' @importFrom rgl rgl.lines
 #' @export
 plot3.sg <- function(x, data, which, ...) {
-
+  if(!requireNamespace("rgl", quiet=TRUE)){
+    stop("Package 'rgl' needed for 3D plots of sg-objects.")
+  }
+  else{
+    liner <- rgl::rgl.lines
+  }
   A <- sg2adj(x)$matrix
 
   n <- ncol(A)
@@ -100,6 +106,6 @@ plot3.sg <- function(x, data, which, ...) {
     x1 <- as.vector( rbind(x0, xo ))
     y1 <- as.vector( rbind(y0, yo ))
     z1 <- as.vector( rbind(z0, zo ))
-    rgl.lines(x1, y1, z1, ... )
+    liner(x1, y1, z1, ... )
   })
 }
