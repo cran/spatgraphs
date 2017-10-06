@@ -1,4 +1,4 @@
-221444e9fb44ec760135b5b14aa1201e *DESCRIPTION
+487afabb23a182c5590471591aa37ae6 *DESCRIPTION
 d5c1ad964a2933b0bcdae70ca98122a0 *NAMESPACE
 ea057314e31b5d1ea67c50e9ba3aa5a9 *NEWS
 20254cecd07a9a5ed9617cfc1099b5d7 *R/RcppExports.R
@@ -18,7 +18,7 @@ f0cbe7aa50d518cedfdaa46d1116e2c6 *R/set_weights.R
 9bbb1cbc255d009cc7fea62f29e05776 *R/sg2igraph.R
 d7a0da0dc9c481babb8f57c5ab8e0a02 *R/shortestPath.R
 0cd70b78233ccc16d5bc7345aef3b2a4 *R/spatcluster.R
-4c5d11a2c7cecea5f853ceff1f6105e7 *R/spatgraph.R
+63803355bfb2fa7b7d31d70c715c33a8 *R/spatgraph.R
 90e2f467b87658238496218ddcc2cd7e *R/spectral_sg.R
 78f14d097e32ef10bde4aa4bdffc851c *R/verify_parameters.R
 405ce679268951baf91c666ba96b7d46 *man/adj2sg.Rd
@@ -49,15 +49,15 @@ c4abbb4e59f82c4e47baa40c79af9294 *man/sg2sym.Rd
 091a9f977190c5002aa7f58096cde577 *man/shortestPath.Rd
 a269c7f6004281fe9681a5de26e928f3 *man/sparse2sg.Rd
 66c665f5bd4277ab8cf813aaf91e1a00 *man/spatcluster.Rd
-0e614ffd20bc8e83c1809819c05a368a *man/spatgraph.Rd
+0e577ddab827565bb2a659c231dfc0b2 *man/spatgraph.Rd
 ec9727464114d2c7a4430423bc4bf557 *man/spectral.sg.Rd
 c7feb6b97c81816ec0cbad7e5e73ed0f *man/summary.sg.Rd
 c901ad6d985eceeb4e6b4d02a686848c *man/summary.sgc.Rd
 0fb28949c41b423c813d1d433b0ca071 *man/t.sg.Rd
 b828914d13411c0d7749a1c8c5fad368 *man/t.sgadj.Rd
 e0558bfc1e6ba9b9b42779f8b2f2fe17 *man/weight.sg.Rd
-85a6ef4126ce7ccb87aec26d41628e29 *src/Graph.cpp
-f79ea345eb80cee6c6871c94fac57967 *src/Graph.h
+c8ed6f15d360f385d26e61b65c2dbed6 *src/Graph.cpp
+4e35463b340f15756ddd98d77921a8d0 *src/Graph.h
 be8c04814522783b232dfaafa6f5a55e *src/Pp.cpp
 451b8d8399cc07fcce3536e835929001 *src/Pp.h
 4c86ab44a3db5f0e9f825d82749df6c6 *src/RcppExports.cpp
@@ -65,4 +65,4 @@ e347fee059a5d5f7e737be558c2d6d2a *src/cut.cpp
 0b6d2f54d15b2641de45f77d6aaad619 *src/prune.cpp
 c207007921ca2bf2f3ae0ed729c99d36 *src/remove_nodes.cpp
 1cca0dbe1d0faec9a46106cc2aa18f8f *src/spatcluster.cpp
-778e6727bf03624a831f05fc533d9e4b *src/spatgraph.cpp
+4775a61d8af2af319b0704ed516d5325 *src/spatgraph.cpp
