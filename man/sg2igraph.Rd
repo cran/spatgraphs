@@ -4,11 +4,23 @@
 \alias{sg2igraph}
 \title{sg to igraph}
 \usage{
-sg2igraph(x)
+sg2igraph(g, x, ...)
 }
 \arguments{
-\item{x}{sg object}
+\item{g}{sg object}
+
+\item{x}{possibly the location pattern}
+
+\item{...}{not used
+
+Not implemented. You can use the 'graph_from_adj_list'-function in 'igraph'-package on the edges-element of the graph.}
 }
 \description{
-sg to igraph
+Obsolete. Use igraph::graph_from_adj_list on the graph edges element.
+}
+\examples{
+\dontrun{
+ix <- igraph::graph_from_adj_list(x$edges)
+}
+
 }
